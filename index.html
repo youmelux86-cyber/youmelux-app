@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOUMELUX - Executive Dashboard</title>
+    <!-- PWA Meta Tags -->
+<meta name="theme-color" content="#0a0e27">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="YOUMELUX">
+<meta name="description" content="YOUMELUX Executive Dashboard - Premium Business Management">
+
+<!-- PWA Manifest -->
+<link rel="manifest" href="manifest.json">
+
+<!-- iOS Icons -->
+<link rel="apple-touch-icon" href="icon-192.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Fixed Background Layer */
+        .background-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, #0a0e27 0%, #000000 100%);
+            z-index: -4;
+        }
+
+        /* Moving Background Layer */
+        .background-moving {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(125deg, 
+                rgba(138, 43, 226, 0.15) 0%, 
+                rgba(0, 191, 255, 0.15) 25%, 
+                rgba(255, 20, 147, 0.15) 50%, 
+                rgba(255, 215, 0, 0.15) 75%, 
+                rgba(0, 255, 127, 0.15) 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+            z-index: -3;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Pattern Overlay */
+        .pattern-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 100px, rgba(255,255,255,0.01) 100px, rgba(255,255,255,0.01) 102px);
+            z-index: -2;
+        }
+
+        /* Vignette */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.7) 100%);
+            z-index: -1;
+        }
+
+        /* Floating Orbs - Optimized */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.25;
+            animation: floatOrb 20s infinite ease-in-out;
+            z-index: -1;
+            will-change: transform;
+        }
+
+        .orb1 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.6), transparent);
+            top: -100px;
+            left: -100px;
+        }
+
+        .orb2 {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(0, 191, 255, 0.6), transparent);
+            bottom: -80px;
+            right: -80px;
+            animation-delay: 6s;
+        }
+
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(50px, 80px) scale(1.1); }
+            66% { transform: translate(-40px, 60px) scale(0.95); }
+        }
+
+        /* Main Container */
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Logo Area */
+        .logo-area {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInScale 1s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .logo-area h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, 
+                #ffd700 0%, 
+                #ffffff 25%, 
+                #00bfff 50%, 
+                #ff1493 75%, 
+                #ffd700 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 4px;
+            animation: shimmerText 4s linear infinite;
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.4));
+        }
+
+        @keyframes shimmerText {
+            to { background-position: 200% center; }
+        }
+
+        .logo-area .subtitle {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 10px;
+        }
+
+        .logo-area .tagline {
+            font-size: 0.75rem;
+            color: rgba(255, 215, 0, 0.9);
+            font-weight: 400;
+            letter-spacing: 2px;
+            margin-top: 6px;
+            font-style: italic;
+        }
+
+        /* Buttons Container */
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Premium Button Design */
+        .premium-btn {
+            position: relative;
+            padding: 28px 25px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.12), 
+                rgba(255, 255, 255, 0.04));
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.4), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Shimmer Effect */
+        .premium-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -100%;
+            width: 100%;
+            height: 200%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.25), 
+                transparent);
+            transform: skewX(-25deg);
+            transition: left 0.6s;
+        }
+
+        .premium-btn:active::before {
+            left: 150%;
+        }
+
+        /* Animated Border */
+        .premium-btn::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 20px;
+            padding: 2px;
+            background: linear-gradient(135deg, 
+                var(--glow-color-1), 
+                var(--glow-color-2));
+            background-size: 200% 200%;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s;
+            animation: rotateBorder 3s linear infinite;
+        }
+
+        @keyframes rotateBorder {
+            to { background-position: 200% center; }
+        }
+
+        .premium-btn:active {
+            transform: scale(0.96);
+            box-shadow: 
+                0 4px 16px rgba(0, 0, 0, 0.5), 
+                0 0 30px var(--glow-color-1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .premium-btn:active::after {
+            opacity: 1;
+        }
+
+        /* Icon Styling */
+        .btn-icon {
+            font-size: 2.5rem;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+            flex-shrink: 0;
+        }
+
+        .premium-btn:active .btn-icon {
+            transform: scale(1.15) rotate(10deg);
+        }
+
+        .btn-label {
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-size: 0.95rem;
+            text-align: left;
+            flex-grow: 1;
+        }
+
+        /* Color Schemes */
+        .btn-company {
+            --glow-color-1: #3b82f6;
+            --glow-color-2: #60a5fa;
+        }
+
+        .btn-labour {
+            --glow-color-1: #10b981;
+            --glow-color-2: #34d399;
+        }
+
+        .btn-expenses {
+            --glow-color-1: #f97316;
+            --glow-color-2: #fb923c;
+        }
+
+        .btn-owner {
+            --glow-color-1: #ec4899;
+            --glow-color-2: #f472b6;
+        }
+
+        .btn-finance {
+            --glow-color-1: #8b5cf6;
+            --glow-color-2: #a78bfa;
+        }
+
+        .btn-appointment {
+            --glow-color-1: #06b6d4;
+            --glow-color-2: #22d3ee;
+        }
+
+        /* Sparkles - Reduced for performance */
+        .sparkle {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 4px 1px white;
+            animation: twinkle 3s infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Desktop Responsive */
+        @media (min-width: 769px) {
+            .container {
+                justify-content: center;
+                min-height: 100vh;
+            }
+
+            .logo-area {
+                margin-bottom: 60px;
+            }
+
+            .logo-area h1 {
+                font-size: 4.5rem;
+                letter-spacing: 6px;
+            }
+
+            .logo-area .subtitle {
+                font-size: 1rem;
+                letter-spacing: 5px;
+            }
+
+            .logo-area .tagline {
+                font-size: 0.85rem;
+            }
+
+            .buttons-container {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+                max-width: 750px;
+            }
+
+            .premium-btn {
+                padding: 35px 25px;
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .premium-btn:hover {
+                transform: translateY(-10px) scale(1.05);
+                box-shadow: 
+                    0 20px 60px rgba(0, 0, 0, 0.6), 
+                    0 0 40px var(--glow-color-1);
+            }
+
+            .premium-btn:hover::before {
+                left: 150%;
+            }
+
+            .premium-btn:hover::after {
+                opacity: 1;
+            }
+
+            .premium-btn:hover .btn-icon {
+                transform: scale(1.2) rotate(15deg);
+            }
+
+            .btn-icon {
+                font-size: 3rem;
+            }
+
+            .btn-label {
+                text-align: center;
+                font-size: 1rem;
+            }
+
+            .orb3 {
+                width: 300px;
+                height: 300px;
+                background: radial-gradient(circle, rgba(255, 20, 147, 0.6), transparent);
+                top: 40%;
+                right: -100px;
+                animation-delay: 12s;
+            }
+        }
+
+        @media (min-width: 581px) and (max-width: 768px) {
+            .logo-area h1 {
+                font-size: 3.5rem;
+                letter-spacing: 5px;
+            }
+
+            .buttons-container {
+                max-width: 600px;
+            }
+
+            .premium-btn {
+                padding: 32px 30px;
+            }
+        }
+
+        /* Small Mobile */
+        @media (max-width: 380px) {
+            .logo-area h1 {
+                font-size: 2.2rem;
+                letter-spacing: 3px;
+            }
+
+            .logo-area .subtitle {
+                font-size: 0.8rem;
+                letter-spacing: 2px;
+            }
+
+            .logo-area .tagline {
+                font-size: 0.7rem;
+            }
+
+            .premium-btn {
+                padding: 24px 20px;
+                gap: 15px;
+            }
+
+            .btn-icon {
+                font-size: 2.2rem;
+            }
+
+            .btn-label {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Focus State for Accessibility */
+        .premium-btn:focus {
+            outline: none;
+            box-shadow: 
+                0 0 0 4px rgba(255, 255, 255, 0.3),
+                0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Layers -->
+    <div class="background-fixed"></div>
+    <div class="background-moving"></div>
+    <div class="pattern-overlay"></div>
+    <div class="vignette"></div>
+
+    <!-- Floating Orbs -->
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Logo Area -->
+        <div class="logo-area">
+            <h1>YOUMELUX</h1>
+            <p class="subtitle">Executive Dashboard</p>
+            <p class="tagline">Where Excellence Meets Luxury</p>
+        </div>
+
+        <!-- Buttons Container -->
+        <div class="buttons-container">
+            <a href="time.html" class="premium-btn btn-company">
+                <span class="btn-icon">🏢</span>
+                <span class="btn-label">Time Tracker</span>
+            </a>
+
+            <a href="newexpense.html" class="premium-btn btn-labour">
+                <span class="btn-icon">👷</span>
+                <span class="btn-label">Labour Data</span>
+            </a>
+
+            <a href="expenses.html" class="premium-btn btn-expenses">
+                <span class="btn-icon">💰</span>
+                <span class="btn-label">Personal Expenses</span>
+            </a>
+
+            <a href="quotation.html" class="premium-btn btn-owner">
+                <span class="btn-icon">👤</span>
+                <span class="btn-label">Quotation</span>
+            </a>
+
+            <a href="finance.html" class="premium-btn btn-finance">
+                <span class="btn-icon">📊</span>
+                <span class="btn-label">Finance</span>
+            </a>
+
+            <a href="appointement.html" class="premium-btn btn-appointment">
+                <span class="btn-icon">📅</span>
+                <span class="btn-label">Appointment</span>
+            </a>
+        </div>
+    </div>
+
+  <script>
+    // Optimized sparkles - fewer and lighter
+    function createSparkles() {
+        setInterval(() => {
+            if (Math.random() > 0.7) { // Create sparkles less frequently
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 3 + 's';
+                document.body.appendChild(sparkle);
+
+                setTimeout(() => sparkle.remove(), 3000);
+            }
+        }, 300);
+    }
+
+    createSparkles();
+
+    // Add parallax only on desktop
+    if (window.innerWidth > 768) {
+        document.addEventListener('mousemove', (e) => {
+            const buttons = document.querySelectorAll('.premium-btn');
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.008;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.008;
+            
+            buttons.forEach((btn, index) => {
+                const speed = (index + 1) * 0.3;
+                btn.style.transform = `translate(${moveX * speed}px, ${moveY * speed}px)`;
+            });
+        });
+    }
+
+    // Prevent zoom on double tap for iOS
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', (e) => {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300) {
+            e.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, false);
+
+    // ========== PWA CODE STARTS HERE ========== //
+
+    // Service Worker Registration
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(reg => console.log('✅ YOUMELUX PWA Active!'))
+                .catch(err => console.log('❌ SW Error:', err));
+        });
+    }
+
+    // Install App Prompt
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        showInstallButton();
+    });
+
+    function showInstallButton() {
+        const installDiv = document.createElement('div');
+        installDiv.id = 'install-prompt';
+        installDiv.innerHTML = `
+            <div style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+                        background:linear-gradient(135deg,#8a2be2,#00bfff);
+                        padding:15px 30px;border-radius:50px;color:white;
+                        font-weight:700;cursor:pointer;z-index:9999;
+                        box-shadow:0 10px 40px rgba(0,0,0,0.5);
+                        animation:fadeInUp 0.5s ease;font-size:0.9rem;
+                        letter-spacing:1px;border:2px solid rgba(255,255,255,0.3);">
+                📱 Install YOUMELUX App
+            </div>
+        `;
+        installDiv.onclick = async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User choice: ${outcome}`);
+                deferredPrompt = null;
+                installDiv.remove();
+            }
+        };
+        document.body.appendChild(installDiv);
+
+        // Auto hide after 10 seconds
+        setTimeout(() => {
+            if (document.getElementById('install-prompt')) {
+                installDiv.style.animation = 'fadeInUp 0.5s ease reverse';
+                setTimeout(() => installDiv.remove(), 500);
+            }
+        }, 10000);
+    }
+
+    // iOS Standalone mode detection
+    if (window.navigator.standalone === true) {
+        console.log('🎉 Running as iOS PWA!');
+    }
+
+    // Check if already installed
+    window.addEventListener('appinstalled', () => {
+        console.log('✅ YOUMELUX App Installed Successfully!');
+        deferredPrompt = null;
+    });
+</script>
+</body>
+</html>

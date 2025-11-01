@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouMeLux Appointment Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: #0a0a0a;
+    position: relative;
+}
+
+.bg-layer-1 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(238, 174, 202, 0.3), transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(148, 187, 233, 0.3), transparent 50%);
+    animation: gradientShift 15s ease infinite;
+    z-index: -2;
+}
+
+.bg-layer-2 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    opacity: 0.1;
+    z-index: -1;
+}
+
+@keyframes gradientShift {
+    0%, 100% { filter: hue-rotate(0deg) brightness(1); }
+    50% { filter: hue-rotate(30deg) brightness(1.2); }
+}
+
+.floating-orbs {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    animation: float 20s infinite ease-in-out;
+    opacity: 0.4;
+}
+
+.orb:nth-child(1) {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, #667eea, transparent);
+    top: -10%;
+    left: -10%;
+    animation-delay: 0s;
+}
+
+.orb:nth-child(2) {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, #764ba2, transparent);
+    top: 50%;
+    right: -10%;
+    animation-delay: 5s;
+}
+
+.orb:nth-child(3) {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, #f093fb, transparent);
+    bottom: -15%;
+    left: 30%;
+    animation-delay: 10s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(50px, -50px) scale(1.1); }
+    66% { transform: translate(-30px, 30px) scale(0.9); }
+}
+
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 3s infinite ease-in-out;
+    box-shadow: 0 0 10px rgba(255,255,255,0.8);
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1); }
+}
+
+/* BACK TO HOME BUTTON - NEW */
+.back-home-btn {
+    position: fixed;
+    top: 25px;
+    left: 25px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: 2px solid rgba(255,255,255,0.3);
+    padding: 12px 24px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 700;
+    transition: all 0.4s ease;
+    z-index: 1000;
+    box-shadow: 0 8px 25px rgba(102,126,234,0.5);
+    backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.back-home-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 35px rgba(102,126,234,0.7);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.back-home-btn:active {
+    transform: translateY(-1px) scale(1.02);
+}
+
+.container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    padding-top: 80px; /* Extra space for back button */
+    position: relative;
+    z-index: 2;
+    animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.header h1 {
+    font-size: clamp(32px, 6vw, 64px);
+    font-weight: 800;
+    background: linear-gradient(135deg, #fff 0%, #f093fb 50%, #667eea 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 2px;
+    animation: shimmerText 3s infinite linear;
+    text-shadow: 0 0 80px rgba(255,255,255,0.3);
+}
+
+@keyframes shimmerText {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+.tabs {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.tab-btn {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 14px 32px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.tab-btn:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-3px);
+}
+
+.tab-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: transparent;
+    box-shadow: 0 15px 40px rgba(102,126,234,0.6);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-bottom: 50px;
+}
+
+.stat-card {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(30px);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 25px;
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s ease;
+    animation: slideInScale 0.8s ease-out backwards;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.stat-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 60px rgba(102,126,234,0.5);
+}
+
+@keyframes slideInScale {
+    from { opacity: 0; transform: scale(0.8) translateY(50px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.stat-label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.stat-value {
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 800;
+    color: #667eea;
+    text-shadow: 0 0 30px currentColor;
+}
+
+.card {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(30px);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 30px;
+    padding: 40px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    margin-bottom: 30px;
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.card h2 {
+    color: #fff;
+    margin-bottom: 30px;
+    font-size: clamp(22px, 3vw, 28px);
+    font-weight: 700;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, #fff, #667eea);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.card h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 2px;
+    box-shadow: 0 0 20px rgba(102,126,234,0.6);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    color: rgba(255,255,255,0.8);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 16px 20px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    font-size: 15px;
+    color: #fff;
+    transition: all 0.4s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    background: rgba(255,255,255,0.08);
+    box-shadow: 0 0 0 5px rgba(102,126,234,0.2);
+    transform: translateY(-3px);
+}
+
+input::placeholder, textarea::placeholder {
+    color: rgba(255,255,255,0.4);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 18px 36px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: 700;
+    transition: all 0.4s ease;
+    width: 100%;
+    margin-top: 15px;
+    box-shadow: 0 10px 30px rgba(102,126,234,0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(102,126,234,0.7);
+}
+
+.btn-small {
+    padding: 10px 20px;
+    font-size: 14px;
+    width: auto;
+    margin: 5px;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.appointment-item, .call-item {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 20px;
+    border-left: 5px solid;
+    transition: all 0.4s ease;
+    animation: popIn 0.5s ease-out;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+@keyframes popIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.appointment-item:hover, .call-item:hover {
+    transform: translateX(10px) translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+
+.appointment-item.scheduled { border-left-color: #f59e0b; }
+.appointment-item.completed { border-left-color: #10b981; }
+.appointment-item.cancelled { border-left-color: #ef4444; }
+.appointment-item.rescheduled { border-left-color: #667eea; }
+
+.call-item.incoming { border-left-color: #10b981; }
+.call-item.outgoing { border-left-color: #667eea; }
+
+.item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.item-name {
+    font-weight: 700;
+    font-size: 20px;
+    color: #fff;
+}
+
+.item-status {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.status-scheduled { background: rgba(245,158,11,0.2); color: #f59e0b; }
+.status-completed { background: rgba(16,185,129,0.2); color: #10b981; }
+.status-cancelled { background: rgba(239,68,68,0.2); color: #ef4444; }
+.status-rescheduled { background: rgba(102,126,234,0.2); color: #667eea; }
+
+.item-details {
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+    margin-top: 10px;
+    line-height: 1.8;
+}
+
+.item-notes {
+    margin-top: 15px;
+    padding: 12px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 12px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+}
+
+.item-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.list-container {
+    max-height: 600px;
+    overflow-y: auto;
+    padding-right: 15px;
+}
+
+.list-container::-webkit-scrollbar {
+    width: 10px;
+}
+
+.list-container::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+}
+
+.list-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #667eea, #764ba2);
+    border-radius: 10px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: rgba(255,255,255,0.4);
+}
+
+.empty-state svg {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 25px;
+    opacity: 0.3;
+}
+
+.filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.filter-input {
+    flex: 1;
+    min-width: 200px;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* RESPONSIVE - MOBILE */
+@media (max-width: 768px) {
+    .back-home-btn {
+        top: 15px;
+        left: 15px;
+        padding: 10px 18px;
+        font-size: 13px;
+        gap: 6px;
+    }
+
+    .container {
+        padding-top: 70px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tabs {
+        flex-direction: column;
+    }
+
+    .tab-btn {
+        width: 100%;
+    }
+
+    .item-actions {
+        flex-direction: column;
+    }
+
+    .item-actions button {
+        width: 100%;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="bg-layer-1"></div>
+    <div class="bg-layer-2"></div>
+    
+    <div class="floating-orbs">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <div class="particles" id="particles"></div>
+
+    <!-- BACK TO HOME BUTTON - NEW -->
+    <a href="index.html" class="back-home-btn">
+        <span>🏠</span>
+        <span>Home</span>
+    </a>
+
+    <div class="container">
+        <div class="header">
+            <h1>📅 YouMeLux Appointment Tracker</h1>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('dashboard')">📊 Dashboard</button>
+            <button class="tab-btn" onclick="switchTab('appointments')">📅 Appointments</button>
+            <button class="tab-btn" onclick="switchTab('calls')">📞 Call Logs</button>
+            <button class="tab-btn" onclick="switchTab('clients')">👥 Clients</button>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Appointments</div>
+                    <div class="stat-value" id="totalAppointments">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Today's Schedule</div>
+                    <div class="stat-value" id="todayAppointments">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Completed</div>
+                    <div class="stat-value" id="completedAppointments">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Calls</div>
+                    <div class="stat-value" id="totalCalls">0</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>📅 Today's Appointments</h2>
+                <div class="list-container" id="todayList"></div>
+            </div>
+
+            <div class="card">
+                <h2>🔔 Upcoming This Week</h2>
+                <div class="list-container" id="upcomingList"></div>
+            </div>
+        </div>
+
+        <!-- Appointments Tab -->
+        <div id="appointments" class="tab-content">
+            <div class="card">
+                <h2>➕ Schedule New Appointment</h2>
+                <form id="appointmentForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Client Name *</label>
+                            <input type="text" id="aptClientName" required placeholder="Enter client name">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number *</label>
+                            <input type="tel" id="aptPhone" required placeholder="Enter phone number">
+                        </div>
+                        <div class="form-group">
+                            <label>Date *</label>
+                            <input type="date" id="aptDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Time *</label>
+                            <input type="time" id="aptTime" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Meeting Type *</label>
+                            <select id="aptType" required>
+                                <option value="call">📞 Phone Call</option>
+                                <option value="inperson">🤝 In-Person</option>
+                                <option value="video">📹 Video Call</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Lead Status</label>
+                            <select id="aptLeadStatus">
+                                <option value="hot">🔥 Hot Lead</option>
+                                <option value="warm">☀️ Warm</option>
+                                <option value="cold">❄️ Cold</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Purpose/Notes</label>
+                        <textarea id="aptNotes" placeholder="Meeting purpose, discussion points..."></textarea>
+                    </div>
+                    <button type="submit" class="btn">Schedule Appointment</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>📋 All Appointments</h2>
+                <div class="filters">
+                    <input type="text" class="filter-input" id="aptSearch" placeholder="🔍 Search by name...">
+                    <select class="filter-input" id="aptFilter" onchange="renderAppointments()">
+                        <option value="all">All Status</option>
+                        <option value="scheduled">Scheduled</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                        <option value="rescheduled">Rescheduled</option>
+                    </select>
+                </div>
+                <div class="list-container" id="appointmentList"></div>
+            </div>
+        </div>
+
+        <!-- Calls Tab -->
+        <div id="calls" class="tab-content">
+            <div class="card">
+                <h2>➕ Log New Call</h2>
+                <form id="callForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Client Name *</label>
+                            <input type="text" id="callClientName" required placeholder="Enter client name">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" id="callPhone" placeholder="Enter phone number">
+                        </div>
+                        <div class="form-group">
+                            <label>Date *</label>
+                            <input type="date" id="callDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Time *</label>
+                            <input type="time" id="callTime" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Call Type *</label>
+                            <select id="callType" required>
+                                <option value="incoming">📥 Incoming</option>
+                                <option value="outgoing">📤 Outgoing</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Duration (minutes)</label>
+                            <input type="number" id="callDuration" placeholder="5">
+                        </div>
+                        <div class="form-group">
+                            <label>Client Response *</label>
+                            <select id="callResponse" required>
+                                <option value="interested">✅ Interested</option>
+                                <option value="notinterested">❌ Not Interested</option>
+                                <option value="callback">📞 Call Back Later</option>
+                                <option value="closed">💰 Deal Closed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Call Notes</label>
+                        <textarea id="callNotes" placeholder="What was discussed..."></textarea>
+                    </div>
+                    <button type="submit" class="btn">Log Call</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>📞 Call History</h2>
+                <div class="filters">
+                    <input type="text" class="filter-input" id="callSearch" placeholder="🔍 Search by name...">
+                    <select class="filter-input" id="callFilter" onchange="renderCalls()">
+                        <option value="all">All Calls</option>
+                        <option value="incoming">Incoming</option>
+                        <option value="outgoing">Outgoing</option>
+                    </select>
+                </div>
+                <div class="list-container" id="callList"></div>
+            </div>
+        </div>
+
+        <!-- Clients Tab -->
+        <div id="clients" class="tab-content">
+            <div class="card">
+                <h2>👥 Client Database</h2>
+                <input type="text" class="filter-input" id="clientSearch" placeholder="🔍 Search clients..." style="margin-bottom: 20px;">
+                <div class="list-container" id="clientList"></div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 30px;">
+            <h2>💾 Data Management</h2>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <button class="btn btn-success" style="flex: 1;" onclick="exportData()">📤 Export All Data</button>
+                <label class="btn btn-success" style="flex: 1; text-align: center; cursor: pointer;">
+                    📥 Import Data
+                    <input type="file" id="importFile" accept=".json" onchange="importData(event)" style="display: none;">
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 3 + 's';
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        let appointments = [];
+        let calls = [];
+
+        // Load data
+        function loadData() {
+            const savedApt = localStorage.getItem('youmeluxAppointments');
+            const savedCalls = localStorage.getItem('youmeluxCalls');
+            if (savedApt) appointments = JSON.parse(savedApt);
+            if (savedCalls) calls = JSON.parse(savedCalls);
+            
+            updateStats();
+            renderAppointments();
+            renderCalls();
+            renderClients();
+            renderDashboard();
+        }
+
+        function saveData() {
+            localStorage.setItem('youmeluxAppointments', JSON.stringify(appointments));
+            localStorage.setItem('youmeluxCalls', JSON.stringify(calls));
+        }
+
+        // Format date
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        }
+
+        function formatTime(timeStr) {
+            if (!timeStr) return '';
+            const [hours, minutes] = timeStr.split(':');
+            const h = parseInt(hours);
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            const h12 = h % 12 || 12;
+            return `${h12}:${minutes} ${ampm}`;
+        }
+
+        // Tab switching
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tab).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Appointment form
+        document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const apt = {
+                id: Date.now(),
+                clientName: document.getElementById('aptClientName').value,
+                phone: document.getElementById('aptPhone').value,
+                date: document.getElementById('aptDate').value,
+                time: document.getElementById('aptTime').value,
+                type: document.getElementById('aptType').value,
+                leadStatus: document.getElementById('aptLeadStatus').value,
+                notes: document.getElementById('aptNotes').value,
+                status: 'scheduled',
+                createdAt: new Date().toISOString()
+            };
+            appointments.push(apt);
+            saveData();
+            updateStats();
+            renderAppointments();
+            renderDashboard();
+            this.reset();
+            alert('✅ Appointment scheduled successfully!');
+        });
+
+        // Call form
+        document.getElementById('callForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const call = {
+                id: Date.now(),
+                clientName: document.getElementById('callClientName').value,
+                phone: document.getElementById('callPhone').value,
+                date: document.getElementById('callDate').value,
+                time: document.getElementById('callTime').value,
+                type: document.getElementById('callType').value,
+                duration: document.getElementById('callDuration').value,
+                response: document.getElementById('callResponse').value,
+                notes: document.getElementById('callNotes').value,
+                createdAt: new Date().toISOString()
+            };
+            calls.push(call);
+            saveData();
+            updateStats();
+            renderCalls();
+            renderClients();
+            renderDashboard();
+            this.reset();
+            alert('✅ Call logged successfully!');
+        });
+
+        // Update statistics
+        function updateStats() {
+            document.getElementById('totalAppointments').textContent = appointments.length;
+            document.getElementById('completedAppointments').textContent = 
+                appointments.filter(a => a.status === 'completed').length;
+            document.getElementById('totalCalls').textContent = calls.length;
+
+            const today = new Date().toISOString().split('T')[0];
+            const todayApts = appointments.filter(a => a.date === today);
+            document.getElementById('todayAppointments').textContent = todayApts.length;
+        }
+
+        // Render appointments
+        function renderAppointments() {
+            const filter = document.getElementById('aptFilter').value;
+            const search = document.getElementById('aptSearch').value.toLowerCase();
+            
+            let filtered = appointments;
+            if (filter !== 'all') {
+                filtered = filtered.filter(a => a.status === filter);
+            }
+            if (search) {
+                filtered = filtered.filter(a => 
+                    a.clientName.toLowerCase().includes(search) ||
+                    a.phone.includes(search)
+                );
+            }
+
+            const container = document.getElementById('appointmentList');
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>No appointments found</p></div>';
+                return;
+            }
+
+            container.innerHTML = filtered.sort((a, b) => 
+                new Date(b.date + ' ' + b.time) - new Date(a.date + ' ' + a.time)
+            ).map(apt => `
+                <div class="appointment-item ${apt.status}">
+                    <div class="item-header">
+                        <div class="item-name">${apt.clientName}</div>
+                        <div class="item-status status-${apt.status}">${apt.status}</div>
+                    </div>
+                    <div class="item-details">
+                        📞 ${apt.phone} | 📅 ${formatDate(apt.date)} | ⏰ ${formatTime(apt.time)}<br>
+                        ${apt.type === 'call' ? '📞 Phone Call' : apt.type === 'video' ? '📹 Video Call' : '🤝 In-Person'} | 
+                        ${apt.leadStatus === 'hot' ? '🔥 Hot Lead' : apt.leadStatus === 'warm' ? '☀️ Warm' : '❄️ Cold'}
+                    </div>
+                    ${apt.notes ? `<div class="item-notes">📝 ${apt.notes}</div>` : ''}
+                    <div class="item-actions">
+                        ${apt.status === 'scheduled' ? `
+                            <button class="btn btn-small btn-success" onclick="updateAppointmentStatus(${apt.id}, 'completed')">✅ Complete</button>
+                            <button class="btn btn-small btn-warning" onclick="updateAppointmentStatus(${apt.id}, 'rescheduled')">🔄 Reschedule</button>
+                            <button class="btn btn-small btn-danger" onclick="updateAppointmentStatus(${apt.id}, 'cancelled')">❌ Cancel</button>
+                        ` : ''}
+                        <button class="btn btn-small btn-danger" onclick="deleteAppointment(${apt.id})">🗑️ Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render calls
+        function renderCalls() {
+            const filter = document.getElementById('callFilter').value;
+            const search = document.getElementById('callSearch').value.toLowerCase();
+            
+            let filtered = calls;
+            if (filter !== 'all') {
+                filtered = filtered.filter(c => c.type === filter);
+            }
+            if (search) {
+                filtered = filtered.filter(c => 
+                    c.clientName.toLowerCase().includes(search) ||
+                    c.phone.includes(search)
+                );
+            }
+
+            const container = document.getElementById('callList');
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>No calls logged</p></div>';
+                return;
+            }
+
+            container.innerHTML = filtered.sort((a, b) => 
+                new Date(b.date + ' ' + b.time) - new Date(a.date + ' ' + a.time)
+            ).map(call => `
+                <div class="call-item ${call.type}">
+                    <div class="item-header">
+                        <div class="item-name">${call.clientName}</div>
+                        <div class="item-status" style="background: ${call.type === 'incoming' ? 'rgba(16,185,129,0.2)' : 'rgba(102,126,234,0.2)'}; color: ${call.type === 'incoming' ? '#10b981' : '#667eea'}">
+                            ${call.type === 'incoming' ? '📥 INCOMING' : '📤 OUTGOING'}
+                        </div>
+                    </div>
+                    <div class="item-details">
+                        📞 ${call.phone || 'N/A'} | 📅 ${formatDate(call.date)} | ⏰ ${formatTime(call.time)}
+                        ${call.duration ? ` | ⏱️ ${call.duration} min` : ''}<br>
+                        Response: ${
+                            call.response === 'interested' ? '✅ Interested' :
+                            call.response === 'notinterested' ? '❌ Not Interested' :
+                            call.response === 'callback' ? '📞 Call Back Later' :
+                            '💰 Deal Closed'
+                        }
+                    </div>
+                    ${call.notes ? `<div class="item-notes">📝 ${call.notes}</div>` : ''}
+                    <div class="item-actions">
+                        <button class="btn btn-small btn-danger" onclick="deleteCall(${call.id})">🗑️ Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render clients
+        function renderClients() {
+            const search = document.getElementById('clientSearch').value.toLowerCase();
+            
+            // Get unique clients from both appointments and calls
+            const clientMap = new Map();
+            
+            appointments.forEach(apt => {
+                if (!clientMap.has(apt.phone)) {
+                    clientMap.set(apt.phone, {
+                        name: apt.clientName,
+                        phone: apt.phone,
+                        appointments: [],
+                        calls: []
+                    });
+                }
+                clientMap.get(apt.phone).appointments.push(apt);
+            });
+
+            calls.forEach(call => {
+                const key = call.phone || call.clientName;
+                if (!clientMap.has(key)) {
+                    clientMap.set(key, {
+                        name: call.clientName,
+                        phone: call.phone || 'N/A',
+                        appointments: [],
+                        calls: []
+                    });
+                }
+                clientMap.get(key).calls.push(call);
+            });
+
+            let clients = Array.from(clientMap.values());
+            
+            if (search) {
+                clients = clients.filter(c => 
+                    c.name.toLowerCase().includes(search) ||
+                    c.phone.toLowerCase().includes(search)
+                );
+            }
+
+            const container = document.getElementById('clientList');
+            if (clients.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>No clients found</p></div>';
+                return;
+            }
+
+            container.innerHTML = clients.map(client => `
+                <div class="appointment-item scheduled">
+                    <div class="item-header">
+                        <div class="item-name">${client.name}</div>
+                    </div>
+                    <div class="item-details">
+                        📞 ${client.phone}<br>
+                        📅 ${client.appointments.length} Appointment(s) | 📞 ${client.calls.length} Call(s)
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render dashboard
+        function renderDashboard() {
+            const today = new Date().toISOString().split('T')[0];
+            const todayApts = appointments.filter(a => a.date === today && a.status === 'scheduled');
+            
+            const todayContainer = document.getElementById('todayList');
+            if (todayApts.length === 0) {
+                todayContainer.innerHTML = '<div class="empty-state"><p>No appointments today</p></div>';
+            } else {
+                todayContainer.innerHTML = todayApts.map(apt => `
+                    <div class="appointment-item ${apt.status}">
+                        <div class="item-header">
+                            <div class="item-name">${apt.clientName}</div>
+                            <div>⏰ ${formatTime(apt.time)}</div>
+                        </div>
+                        <div class="item-details">
+                            📞 ${apt.phone} | ${apt.type === 'call' ? '📞 Phone Call' : apt.type === 'video' ? '📹 Video' : '🤝 In-Person'}
+                        </div>
+                        ${apt.notes ? `<div class="item-notes">📝 ${apt.notes}</div>` : ''}
+                    </div>
+                `).join('');
+            }
+
+            // Upcoming this week
+            const nextWeek = new Date();
+            nextWeek.setDate(nextWeek.getDate() + 7);
+            const upcomingApts = appointments.filter(a => {
+                const aptDate = new Date(a.date);
+                return aptDate > new Date() && aptDate <= nextWeek && a.status === 'scheduled';
+            }).sort((a, b) => new Date(a.date + ' ' + a.time) - new Date(b.date + ' ' + b.time));
+
+            const upcomingContainer = document.getElementById('upcomingList');
+            if (upcomingApts.length === 0) {
+                upcomingContainer.innerHTML = '<div class="empty-state"><p>No upcoming appointments</p></div>';
+            } else {
+                upcomingContainer.innerHTML = upcomingApts.map(apt => `
+                    <div class="appointment-item ${apt.status}">
+                        <div class="item-header">
+                            <div class="item-name">${apt.clientName}</div>
+                            <div>📅 ${formatDate(apt.date)} ⏰ ${formatTime(apt.time)}</div>
+                        </div>
+                        <div class="item-details">
+                            📞 ${apt.phone} | ${apt.type === 'call' ? '📞 Phone Call' : apt.type === 'video' ? '📹 Video' : '🤝 In-Person'}
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Update appointment status
+        function updateAppointmentStatus(id, status) {
+            const apt = appointments.find(a => a.id === id);
+            if (apt) {
+                apt.status = status;
+                saveData();
+                updateStats();
+                renderAppointments();
+                renderDashboard();
+            }
+        }
+
+        // Delete appointment
+        function deleteAppointment(id) {
+            if (confirm('Are you sure you want to delete this appointment?')) {
+                appointments = appointments.filter(a => a.id !== id);
+                saveData();
+                updateStats();
+                renderAppointments();
+                renderDashboard();
+            }
+        }
+
+        // Delete call
+        function deleteCall(id) {
+            if (confirm('Are you sure you want to delete this call log?')) {
+                calls = calls.filter(c => c.id !== id);
+                saveData();
+                updateStats();
+                renderCalls();
+                renderClients();
+            }
+        }
+
+        // Export data
+        function exportData() {
+            const data = {
+                appointments: appointments,
+                calls: calls,
+                exportDate: new Date().toISOString()
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `youmelux-data-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Import data
+        function importData(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        if (data.appointments) appointments = data.appointments;
+                        if (data.calls) calls = data.calls;
+                        saveData();
+                        updateStats();
+                        renderAppointments();
+                        renderCalls();
+                        renderClients();
+                        renderDashboard();
+                        alert('✅ Data imported successfully!');
+                    } catch (error) {
+                        alert('❌ Error importing data. Please check the file format.');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        // Search handlers
+        document.getElementById('aptSearch').addEventListener('input', renderAppointments);
+        document.getElementById('callSearch').addEventListener('input', renderCalls);
+        document.getElementById('clientSearch').addEventListener('input', renderClients);
+
+        // Set today's date as default
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('aptDate').value = today;
+        document.getElementById('callDate').value = today;
+
+        // Initialize
+        loadData();
+    </script>
+</body>
+</html>

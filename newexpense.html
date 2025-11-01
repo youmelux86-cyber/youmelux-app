@@ -1,0 +1,2954 @@
+<!DOCTYPE html>
+<body lang="hi">
+    <!-- Floating Home Button -->
+    <a href="index.html" 
+       style="position: fixed; top: 15px; right: 15px; z-index: 10000; display: flex; align-items: center; gap: 6px; padding: 10px 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 20px; font-weight: 700; box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4); transition: all 0.3s; font-size: 14px;"
+       onmouseover="this.style.transform='translateY(-2px) scale(1.05)'; this.style.boxShadow='0 12px 30px rgba(102, 126, 234, 0.6)';"
+       onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 8px 20px rgba(102, 126, 234, 0.4)';">
+        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+        </svg>
+        <span class="home-text">Home</span>
+    </a>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouMeLux Labour Tracker</title>
+    <style>
+       * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #16213e;
+    background: linear-gradient(135deg, #0f3460 0%, #16213e 50%, #533483 100%);
+    min-height: 100vh;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Floating Blobs */
+body::before {
+    content: '';
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(102, 126, 234, 0.4) 0%, transparent 70%);
+    top: -200px;
+    right: -200px;
+    animation: blob1 20s ease-in-out infinite;
+    z-index: 0;
+    pointer-events: none;
+    filter: blur(80px);
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(118, 75, 162, 0.4) 0%, transparent 70%);
+    bottom: -150px;
+    left: -150px;
+    animation: blob2 18s ease-in-out infinite;
+    z-index: 0;
+    pointer-events: none;
+    filter: blur(80px);
+}
+
+@keyframes blob1 {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+    25% {
+        transform: translate(-100px, 50px) scale(1.1);
+        border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+    }
+    50% {
+        transform: translate(50px, -80px) scale(0.9);
+        border-radius: 40% 60% 60% 40% / 70% 30% 60% 40%;
+    }
+    75% {
+        transform: translate(80px, 60px) scale(1.05);
+        border-radius: 70% 30% 40% 60% / 40% 70% 30% 60%;
+    }
+}
+
+@keyframes blob2 {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+        border-radius: 50% 50% 30% 70% / 50% 50% 70% 30%;
+    }
+    33% {
+        transform: translate(60px, -60px) scale(1.1);
+        border-radius: 70% 30% 50% 50% / 30% 70% 50% 50%;
+    }
+    66% {
+        transform: translate(-40px, 70px) scale(0.95);
+        border-radius: 30% 70% 70% 30% / 50% 50% 30% 70%;
+    }
+}
+
+/* Noise Texture */
+.container::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Animated Light Rays */
+.container::after {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 0deg at 50% 50%, 
+        transparent 0deg, 
+        rgba(102, 126, 234, 0.1) 90deg, 
+        transparent 180deg,
+        rgba(118, 75, 162, 0.1) 270deg,
+        transparent 360deg);
+    animation: rotateLights 30s linear infinite;
+    z-index: 0;
+    pointer-events: none;
+}
+
+@keyframes rotateLights {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Premium Glassmorphism Effects */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    animation: fadeInDown 0.8s ease-out;
+}
+
+.header p {
+    position: relative;
+    z-index: 1;
+    animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.nav-tabs {
+    display: flex;
+    background: linear-gradient(to right, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 2px solid #dee2e6;
+    overflow-x: auto;
+    position: relative;
+}
+
+.nav-tabs::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    transition: all 0.3s ease;
+}
+
+.nav-tab {
+    padding: 15px 25px;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    font-weight: 600;
+    color: #495057;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-tab::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.nav-tab:hover::before {
+    left: 100%;
+}
+
+.nav-tab:hover {
+    background: rgba(102, 126, 234, 0.05);
+    color: #667eea;
+}
+
+.nav-tab.active {
+    background: white;
+    color: #667eea;
+    border-bottom: 3px solid #667eea;
+    box-shadow: 0 -2px 10px rgba(102, 126, 234, 0.2);
+}
+
+.tab-content {
+    display: none;
+    padding: 30px;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(10px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #495057;
+    transition: color 0.3s ease;
+}
+
+.form-group:focus-within label {
+    color: #667eea;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    transform: translateY(-2px);
+}
+
+.form-group input:disabled, .form-group select:disabled {
+    background: #f8f9fa;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-right: 10px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+}
+
+.btn-success:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+}
+
+.btn-danger:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+    color: #212529;
+}
+
+.btn-warning:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 193, 7, 0.4);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+    color: white;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(102, 126, 234, 0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.05), transparent);
+    transition: left 0.5s ease;
+}
+
+.card:hover::before {
+    left: 100%;
+}
+
+.card:hover {
+    transform: translateY(-5px) scale(1.01);
+    box-shadow: 0 15px 50px rgba(102, 126, 234, 0.2);
+    border-color: rgba(102, 126, 234, 0.3);
+}
+
+.card-title {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #667eea;
+    margin-bottom: 15px;
+    position: relative;
+    display: inline-block;
+}
+
+.card-title::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 2px;
+    animation: expandLine 0.6s ease-out;
+}
+
+@keyframes expandLine {
+    from { width: 0; }
+    to { width: 50px; }
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    transition: transform 0.5s ease;
+}
+
+.stat-card:hover::before {
+    transform: translate(-25%, -25%);
+}
+
+.stat-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 15px 45px rgba(102, 126, 234, 0.4);
+}
+
+.stat-card h3 {
+    font-size: 2.2em;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+    animation: countUp 0.8s ease-out;
+}
+
+@keyframes countUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stat-card p {
+    opacity: 0.9;
+    font-size: 14px;
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.5px;
+}
+
+.table-container {
+    overflow-x: auto;
+    margin-top: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+tr {
+    transition: all 0.3s ease;
+}
+
+tr:hover {
+    background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+    transform: translateX(5px);
+    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.1);
+}
+
+tbody tr {
+    animation: fadeInRow 0.4s ease-out backwards;
+}
+
+tbody tr:nth-child(1) { animation-delay: 0.05s; }
+tbody tr:nth-child(2) { animation-delay: 0.1s; }
+tbody tr:nth-child(3) { animation-delay: 0.15s; }
+tbody tr:nth-child(4) { animation-delay: 0.2s; }
+tbody tr:nth-child(5) { animation-delay: 0.25s; }
+
+@keyframes fadeInRow {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.status-badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+    animation: badgePulse 2s ease-in-out infinite;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+@keyframes badgePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.status-working {
+    background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+    color: #212529;
+}
+
+.status-completed {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        border-radius: 15px;
+        margin-top: 50px; /* Home button ke liye space */
+    }
+    
+    /* Home Button Mobile Optimization */
+    a[href="index.html"] {
+        top: 10px !important;
+        right: 10px !important;
+        padding: 8px 12px !important;
+        font-size: 12px !important;
+    }
+    
+    a[href="index.html"] svg {
+        width: 16px !important;
+        height: 16px !important;
+    }
+    
+    .home-text {
+        display: none; /* Mobile pe sirf icon dikhaao */
+    }
+    
+    .header h1 {
+        font-size: 1.5em;
+    }
+    
+    .header p {
+        font-size: 12px;
+    }
+    
+    .nav-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+    
+    .nav-tabs::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .nav-tab {
+        padding: 12px 18px;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+    
+    .tab-content {
+        padding: 15px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .stat-card {
+        padding: 20px;
+    }
+    
+    .stat-card h3 {
+        font-size: 1.8em;
+    }
+    
+    .grid-2, .grid-3 {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        font-size: 16px; /* iOS zoom prevent */
+        padding: 12px;
+    }
+    
+    .btn {
+        padding: 12px 20px;
+        font-size: 14px;
+        margin-bottom: 10px;
+        width: 100%;
+        margin-right: 0;
+    }
+    
+    .card {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .card-title {
+        font-size: 1.2em;
+    }
+    
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    table {
+        min-width: 600px;
+        font-size: 13px;
+    }
+    
+    th, td {
+        padding: 10px 8px;
+        white-space: nowrap;
+    }
+    
+    .modal-content {
+        margin: 20px 10px;
+        padding: 20px;
+        max-height: 90vh;
+    }
+    
+    .labour-detail-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 10px;
+    }
+    
+    .labour-stat {
+        padding: 15px;
+    }
+    
+    .labour-stat h4 {
+        font-size: 1.5em;
+    }
+    
+    .labour-stat p {
+        font-size: 11px;
+    }
+    
+    .attendance-tag {
+        font-size: 10px;
+        padding: 4px 10px;
+    }
+    
+    .status-badge {
+        font-size: 11px;
+        padding: 5px 12px;
+    }
+    
+    .expense-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 15px;
+    }
+    
+    .search-box input {
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+}
+
+/* Extra Small Devices */
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.3em;
+    }
+    
+    .stat-card h3 {
+        font-size: 1.5em;
+    }
+    
+    .nav-tab {
+        padding: 10px 15px;
+        font-size: 12px;
+    }
+    
+    table {
+        font-size: 12px;
+        min-width: 500px;
+    }
+    
+    th, td {
+        padding: 8px 6px;
+    }
+    
+    .btn {
+        font-size: 13px;
+        padding: 10px 16px;
+    }
+    
+    .labour-detail-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Landscape Mode Mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+    .modal-content {
+        max-height: 80vh;
+    }
+    
+    .header {
+        padding: 20px;
+    }
+    
+    .header h1 {
+        font-size: 1.4em;
+    }
+}
+
+/* Touch Improvements */
+@media (hover: none) and (pointer: coarse) {
+    .btn, .nav-tab, .card {
+        -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
+    }
+    
+    .btn {
+        min-height: 44px;
+    }
+    
+    .nav-tab {
+        min-height: 44px;
+    }
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    animation: fadeIn 0.3s;
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: white;
+    margin: 50px auto;
+    padding: 35px;
+    border-radius: 20px;
+    max-width: 700px;
+    max-height: 85vh;
+    overflow-y: auto;
+    animation: modalSlideDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+@keyframes modalSlideDown {
+    from { 
+        transform: translateY(-50px) scale(0.9); 
+        opacity: 0; 
+    }
+    to { 
+        transform: translateY(0) scale(1); 
+        opacity: 1; 
+    }
+}
+
+/* Custom Scrollbar */
+.modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.close {
+    float: right;
+    font-size: 32px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    line-height: 20px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+}
+
+.close:hover {
+    color: #dc3545;
+    transform: rotate(90deg) scale(1.2);
+}
+
+.expense-item {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 18px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+    border-left: 4px solid #667eea;
+}
+
+.expense-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.profit-positive {
+    color: #28a745;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(40, 167, 69, 0.3);
+}
+
+.profit-negative {
+    color: #dc3545;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(220, 53, 69, 0.3);
+}
+
+.search-box {
+    margin-bottom: 20px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 14px 20px;
+    border: 2px solid #e9ecef;
+    border-radius: 25px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    transform: translateY(-2px);
+}
+
+.search-box input::placeholder {
+    color: #adb5bd;
+}
+
+.attendance-tag {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 11px;
+    margin: 2px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.attendance-tag:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.att-full {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+}
+
+.att-half {
+    background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+    color: #212529;
+}
+
+.att-overtime {
+    background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+    color: white;
+}
+
+.att-absent {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+}
+
+.labour-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.labour-stat {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    cursor: pointer;
+}
+
+.labour-stat:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+    border-color: #667eea;
+}
+
+.labour-stat h4 {
+    font-size: 2em;
+    color: #667eea;
+    margin-bottom: 5px;
+    animation: numberPop 0.5s ease-out;
+}
+
+@keyframes numberPop {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.labour-stat p {
+    color: #6c757d;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Loading Animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Smooth Scrollbar for Entire Page */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background: white;
+    }
+    
+    .nav-tabs, .btn {
+        display: none;
+    }
+    
+    .container {
+        box-shadow: none;
+    }
+}
+
+/* Selection Color */
+::selection {
+    background: #667eea;
+    color: white;
+}
+
+::-moz-selection {
+    background: #667eea;
+    color: white;
+}
+</style>
+</head>
+</body>
+    <div class="container">
+        <div class="header">
+            <h1>🏗️ YouMeLux Interior Design</h1>
+            <p>Labour Tracker & Profit-Loss Management System</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('dashboard')">📊 Dashboard</button>
+            <button class="nav-tab" onclick="showTab('sites')">🏢 Sites</button>
+            <button class="nav-tab" onclick="showTab('labour')">👷 Labour</button>
+            <button class="nav-tab" onclick="showTab('attendance')">📅 Attendance</button>
+            <button class="nav-tab" onclick="showTab('reports')">📈 Reports</button>
+            <button class="nav-tab" onclick="showTab('settings')">⚙️ Settings</button>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 id="totalSites">0</h3>
+                    <p>Total Sites</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <h3 id="activeSites">0</h3>
+                    <p>Active Sites</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    <h3 id="totalLabour">0</h3>
+                    <p>Total Labour</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                    <h3 id="totalProfit">₹0</h3>
+                    <p>Overall Profit/Loss</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">Active Sites Overview</h2>
+                <div class="table-container">
+                    <table id="dashboardSitesTable">
+                        <thead>
+                            <tr>
+                                <th>Site Name</th>
+                                <th>Client</th>
+                                <th>Started</th>
+                                <th>Status</th>
+                                <th>Profit/Loss</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sites Tab -->
+        <div id="sites" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">Add New Site</h2>
+                <form id="siteForm">
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Site Name *</label>
+                            <input type="text" id="siteName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Client Name *</label>
+                            <input type="text" id="clientName" required>
+                        </div>
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Starting Date *</label>
+                            <input type="date" id="startDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Status *</label>
+                            <select id="siteStatus" required>
+                                <option value="working">Working</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <label>Completion Date (if completed)</label>
+                        <input type="date" id="completionDate">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Site</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">All Sites</h2>
+                <div class="search-box">
+                    <input type="text" id="siteSearch" placeholder="Search sites...">
+                </div>
+                <div class="table-container">
+                    <table id="sitesTable">
+                        <thead>
+                            <tr>
+                                <th>Site Name</th>
+                                <th>Client</th>
+                                <th>Started</th>
+                                <th>Completed</th>
+                                <th>Status</th>
+                                <th>Revenue</th>
+                                <th>Expense</th>
+                                <th>Profit/Loss</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Labour Tab -->
+        <div id="labour" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">Add New Labour</h2>
+                <form id="labourForm">
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>Labour Name *</label>
+                            <input type="text" id="labourName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Daily Rate (Full Day) *</label>
+                            <input type="number" id="labourRate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="text" id="labourPhone">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Labour</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">All Labour</h2>
+                <div class="search-box">
+                    <input type="text" id="labourSearch" placeholder="Search labour...">
+                </div>
+                <div class="table-container">
+                    <table id="labourTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Daily Rate</th>
+                                <th>Phone</th>
+                                <th>Total Attendance</th>
+                                <th>Balance</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attendance Tab -->
+        <div id="attendance" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">Mark Attendance</h2>
+                <form id="attendanceForm">
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>Labour *</label>
+                            <select id="attLabour" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Site *</label>
+                            <select id="attSite" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Date *</label>
+                            <input type="date" id="attDate" required>
+                        </div>
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Attendance Type *</label>
+                            <select id="attType" required>
+                              <option value="full">✅ Full Day (1.0)</option>
+<option value="half">⏰ Half Day (0.5)</option>
+<option value="overtime">⚡ Overtime (1.5x)</option>
+<option value="absent">❌ Absent (0.0)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Notes</label>
+                            <input type="text" id="attNotes" placeholder="Optional notes">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Mark Attendance</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">Payment to Labour</h2>
+                <form id="paymentForm">
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>Labour *</label>
+                            <select id="payLabour" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Amount *</label>
+                            <input type="number" id="payAmount" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Date *</label>
+                            <input type="date" id="payDate" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Site (Optional - for tracking)</label>
+                        <select id="paySite">
+                            <option value="">General Payment</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <input type="text" id="payNotes" placeholder="Payment notes">
+                    </div>
+                    <button type="submit" class="btn btn-success">Record Payment</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">Today's Attendance</h2>
+                <div class="table-container">
+                    <table id="todayAttTable">
+                        <thead>
+                            <tr>
+                                <th>Labour</th>
+                                <th>Site</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Notes</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Tab -->
+        <div id="reports" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">Filter Reports</h2>
+                <div class="grid-3">
+                    <div class="form-group">
+                        <label>Report Type</label>
+                        <select id="reportType" onchange="updateReport()">
+                            <option value="overall">Overall Summary</option>
+                            <option value="monthly">Monthly Summary</option>
+                            <option value="labour">Labour Detailed</option>
+                            <option value="site">Site Detailed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Month</label>
+                        <input type="month" id="reportMonth" onchange="updateReport()">
+                    </div>
+                    <div class="form-group">
+                        <label>Select Labour/Site</label>
+                        <select id="reportEntity" onchange="updateReport()"></select>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="updateReport()">Generate Report</button>
+            </div>
+
+            <div id="reportOutput"></div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="settings" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">Data Management</h2>
+                <p style="margin-bottom: 20px;">Export your data for backup or import previously saved data.</p>
+                <button class="btn btn-success" onclick="exportData()">📥 Export Data</button>
+                <button class="btn btn-warning" onclick="document.getElementById('importFile').click()">📤 Import Data</button>
+                <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(event)">
+                <button class="btn btn-danger" onclick="clearAllData()">🗑️ Clear All Data</button>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">Site Expenses & Revenue</h2>
+                <div class="form-group">
+                    <label>Select Site</label>
+                    <select id="expenseSite" onchange="loadSiteFinances()"></select>
+                </div>
+                <div id="siteFinanceSection"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="labourDetailModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('labourDetailModal')">&times;</span>
+            <div id="labourDetailContent"></div>
+        </div>
+    </div>
+
+    <div id="siteDetailModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('siteDetailModal')">&times;</span>
+            <div id="siteDetailContent"></div>
+        </div>
+    </div>
+
+   <script>
+// Data Storage
+let sites = JSON.parse(localStorage.getItem('youmelux_sites') || '[]');
+let labour = JSON.parse(localStorage.getItem('youmelux_labour') || '[]');
+let attendance = JSON.parse(localStorage.getItem('youmelux_attendance') || '[]');
+let payments = JSON.parse(localStorage.getItem('youmelux_payments') || '[]');
+let siteFinances = JSON.parse(localStorage.getItem('youmelux_finances') || '{}');
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    loadDashboard();
+    loadSitesTable();
+    loadLabourTable();
+    populateDropdowns();
+    updateReport();
+    document.getElementById('attDate').valueAsDate = new Date();
+    document.getElementById('payDate').valueAsDate = new Date();
+    document.getElementById('reportMonth').valueAsDate = new Date();
+    
+    // ✅ Absent select hone pe Site field disable kar do
+    document.getElementById('attType').addEventListener('change', function() {
+        const siteField = document.getElementById('attSite');
+        if(this.value === 'absent') {
+            siteField.disabled = true;
+            siteField.value = '';
+            siteField.required = false;
+            siteField.style.opacity = '0.5';
+        } else {
+            siteField.disabled = false;
+            siteField.required = true;
+            siteField.style.opacity = '1';
+        }
+    });
+});
+
+// Tab Navigation
+function showTab(tabName) {
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(tabName).classList.add('active');
+    event.target.classList.add('active');
+    
+    if(tabName === 'dashboard') loadDashboard();
+    if(tabName === 'attendance') loadTodayAttendance();
+    if(tabName === 'reports') updateReport();
+    if(tabName === 'settings') loadSettingsDropdowns();
+}
+
+// Site Management
+document.getElementById('siteForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const editIdField = document.getElementById('editSiteId');
+    const isEditing = editIdField && editIdField.value;
+    
+    if(isEditing) {
+        const siteId = parseInt(editIdField.value);
+        const siteIndex = sites.findIndex(s => s.id === siteId);
+        
+        if(siteIndex !== -1) {
+            sites[siteIndex].name = document.getElementById('siteName').value;
+            sites[siteIndex].client = document.getElementById('clientName').value;
+            sites[siteIndex].startDate = document.getElementById('startDate').value;
+            sites[siteIndex].status = document.getElementById('siteStatus').value;
+            sites[siteIndex].completionDate = document.getElementById('completionDate').value || null;
+            
+            saveSites();
+            alert('Site updated successfully!');
+        }
+        
+        editIdField.value = '';
+        const submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.textContent = 'Add Site';
+        submitBtn.classList.remove('btn-warning');
+        submitBtn.classList.add('btn-primary');
+    } else {
+        const site = {
+            id: Date.now(),
+            name: document.getElementById('siteName').value,
+            client: document.getElementById('clientName').value,
+            startDate: document.getElementById('startDate').value,
+            status: document.getElementById('siteStatus').value,
+            completionDate: document.getElementById('completionDate').value || null
+        };
+        sites.push(site);
+        saveSites();
+        alert('Site added successfully!');
+    }
+    
+    this.reset();
+    loadSitesTable();
+    loadDashboard();
+    populateDropdowns();
+});
+
+function saveSites() {
+    localStorage.setItem('youmelux_sites', JSON.stringify(sites));
+}
+
+function loadSitesTable() {
+    const tbody = document.getElementById('sitesTable').querySelector('tbody');
+    tbody.innerHTML = '';
+    sites.forEach(site => {
+        const finances = siteFinances[site.id] || {revenue: [], expenses: []};
+        const totalRevenue = finances.revenue.reduce((sum, r) => sum + r.amount, 0);
+        const totalExpense = finances.expenses.reduce((sum, e) => sum + e.amount, 0);
+        const labourExpense = calculateSiteLabourExpense(site.id);
+        const profit = totalRevenue - totalExpense - labourExpense;
+        
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><strong>${site.name}</strong></td>
+            <td>${site.client}</td>
+            <td>${formatDate(site.startDate)}</td>
+            <td>${site.completionDate ? formatDate(site.completionDate) : '-'}</td>
+            <td><span class="status-badge status-${site.status}">${site.status}</span></td>
+            <td>₹${totalRevenue.toLocaleString()}</td>
+            <td>₹${(totalExpense + labourExpense).toLocaleString()}</td>
+            <td class="${profit >= 0 ? 'profit-positive' : 'profit-negative'}">₹${profit.toLocaleString()}</td>
+            <td>
+                <button class="btn btn-primary" style="padding: 5px 10px; font-size: 12px;" onclick="viewSiteDetail(${site.id})">View</button>
+                <button class="btn btn-warning" style="padding: 5px 10px; font-size: 12px;" onclick="editSite(${site.id})">Edit</button>
+                <button class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="deleteSite(${site.id})">Delete</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function editSite(id) {
+    const site = sites.find(s => s.id === id);
+    if(!site) return;
+    
+    document.getElementById('siteName').value = site.name;
+    document.getElementById('clientName').value = site.client;
+    document.getElementById('startDate').value = site.startDate;
+    document.getElementById('siteStatus').value = site.status;
+    document.getElementById('completionDate').value = site.completionDate || '';
+    
+    const form = document.getElementById('siteForm');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.textContent = 'Update Site';
+    submitBtn.classList.remove('btn-primary');
+    submitBtn.classList.add('btn-warning');
+    
+    let editIdField = document.getElementById('editSiteId');
+    if(!editIdField) {
+        editIdField = document.createElement('input');
+        editIdField.type = 'hidden';
+        editIdField.id = 'editSiteId';
+        form.appendChild(editIdField);
+    }
+    editIdField.value = id;
+    
+    showTab('sites');
+    document.querySelectorAll('.nav-tab')[1].classList.add('active');
+    document.getElementById('siteForm').scrollIntoView({ behavior: 'smooth' });
+}
+
+function deleteSite(id) {
+    if(confirm('Are you sure you want to delete this site?')) {
+        sites = sites.filter(s => s.id !== id);
+        saveSites();
+        loadSitesTable();
+        loadDashboard();
+    }
+}
+
+// Labour Management
+document.getElementById('labourForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const lab = {
+        id: Date.now(),
+        name: document.getElementById('labourName').value,
+        rate: parseFloat(document.getElementById('labourRate').value),
+        phone: document.getElementById('labourPhone').value
+    };
+    labour.push(lab);
+    saveLabour();
+    this.reset();
+    loadLabourTable();
+    populateDropdowns();
+    alert('Labour added successfully!');
+});
+
+function saveLabour() {
+    localStorage.setItem('youmelux_labour', JSON.stringify(labour));
+}
+
+function loadLabourTable() {
+    const tbody = document.getElementById('labourTable').querySelector('tbody');
+    tbody.innerHTML = '';
+    labour.forEach(lab => {
+        const totalAtt = calculateLabourAttendance(lab.id);
+        const totalEarned = calculateLabourEarnings(lab.id);
+        const totalPaid = calculateLabourPaid(lab.id);
+        const balance = totalEarned - totalPaid;
+        
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><strong>${lab.name}</strong></td>
+            <td>₹${lab.rate.toLocaleString()}</td>
+            <td>${lab.phone || '-'}</td>
+            <td>${totalAtt.toFixed(1)}</td>
+            <td class="${balance >= 0 ? 'profit-positive' : 'profit-negative'}">₹${balance.toLocaleString()}</td>
+            <td>
+                <button class="btn btn-primary" style="padding: 5px 10px; font-size: 12px;" onclick="viewLabourDetail(${lab.id})">View</button>
+                <button class="btn btn-warning" style="padding: 5px 10px; font-size: 12px;" onclick="editLabour(${lab.id})">Edit</button>
+                <button class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="deleteLabour(${lab.id})">Delete</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function editLabour(id) {
+    const lab = labour.find(l => l.id === id);
+    if(!lab) return;
+    
+    document.getElementById('labourName').value = lab.name;
+    document.getElementById('labourRate').value = lab.rate;
+    document.getElementById('labourPhone').value = lab.phone || '';
+    
+    labour = labour.filter(l => l.id !== id);
+    saveLabour();
+    
+    showTab('labour');
+    document.querySelectorAll('.nav-tab')[2].classList.add('active');
+}
+
+function deleteLabour(id) {
+    if(confirm('Are you sure you want to delete this labour?')) {
+        labour = labour.filter(l => l.id !== id);
+        saveLabour();
+        loadLabourTable();
+    }
+}
+
+// Attendance Management
+document.getElementById('attendanceForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const labourId = parseInt(document.getElementById('attLabour').value);
+    const siteId = document.getElementById('attSite').value ? parseInt(document.getElementById('attSite').value) : null;
+    const date = document.getElementById('attDate').value;
+    const type = document.getElementById('attType').value;
+    
+    // ✅ ABSENT ke liye site optional kar do
+    if(type !== 'absent') {
+        const existing = attendance.find(a => a.labourId === labourId && a.date === date && a.siteId === siteId);
+        if(existing) {
+            alert('Attendance already marked for this labour on this date at this site!');
+            return;
+        }
+    } else {
+        const existing = attendance.find(a => a.labourId === labourId && a.date === date && a.type === 'absent');
+        if(existing) {
+            alert('Absence already marked for this labour on this date!');
+            return;
+        }
+    }
+    
+    const lab = labour.find(l => l.id === labourId);
+    let amount = 0;
+    let attValue = 0;
+    
+    if(type === 'full') {
+        amount = lab.rate;
+        attValue = 1.0;
+    } else if(type === 'half') {
+        amount = lab.rate / 2;
+        attValue = 0.5;
+    } else if(type === 'overtime') {
+        amount = lab.rate * 1.5;
+        attValue = 1.5;
+    } else if(type === 'absent') {
+        amount = 0;
+        attValue = 0;
+    }
+    
+    const att = {
+        id: Date.now(),
+        labourId: labourId,
+        siteId: type === 'absent' ? null : siteId,  // ✅ Absent me site null rakho
+        date: date,
+        type: type,
+        amount: amount,
+        attValue: attValue,
+        notes: document.getElementById('attNotes').value
+    };
+    
+    attendance.push(att);
+    saveAttendance();
+    this.reset();
+    document.getElementById('attDate').valueAsDate = new Date();
+    loadTodayAttendance();
+    loadLabourTable();
+    alert('Attendance marked successfully!');
+});
+
+function saveAttendance() {
+    localStorage.setItem('youmelux_attendance', JSON.stringify(attendance));
+}
+
+function loadTodayAttendance() {
+    const today = new Date().toISOString().split('T')[0];
+    const tbody = document.getElementById('todayAttTable').querySelector('tbody');
+    tbody.innerHTML = '';
+    
+    const todayAtt = attendance.filter(a => a.date === today);
+    todayAtt.forEach(att => {
+        const lab = labour.find(l => l.id === att.labourId);
+        const site = sites.find(s => s.id === att.siteId);
+        
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${lab ? lab.name : 'Unknown'}</td>
+            <td>${att.type === 'absent' ? 'N/A (Absent)' : (site ? site.name : 'Unknown')}</td>
+            <td><span class="attendance-tag att-${att.type}">${att.type}</span></td>
+            <td>₹${att.amount.toLocaleString()}</td>
+            <td>${att.notes || '-'}</td>
+            <td>
+                <button class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="deleteAttendance(${att.id})">Delete</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+    
+    if(todayAtt.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No attendance marked for today</td></tr>';
+    }
+}
+
+function deleteAttendance(id) {
+    if(confirm('Delete this attendance record?')) {
+        attendance = attendance.filter(a => a.id !== id);
+        saveAttendance();
+        loadTodayAttendance();
+        loadLabourTable();
+    }
+}
+
+// Payment Management
+document.getElementById('paymentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const payment = {
+        id: Date.now(),
+        labourId: parseInt(document.getElementById('payLabour').value),
+        amount: parseFloat(document.getElementById('payAmount').value),
+        date: document.getElementById('payDate').value,
+        siteId: document.getElementById('paySite').value ? parseInt(document.getElementById('paySite').value) : null,
+        notes: document.getElementById('payNotes').value
+    };
+    
+    payments.push(payment);
+    savePayments();
+    this.reset();
+    document.getElementById('payDate').valueAsDate = new Date();
+    loadLabourTable();
+    alert('Payment recorded successfully!');
+});
+
+function savePayments() {
+    localStorage.setItem('youmelux_payments', JSON.stringify(payments));
+}
+
+// Calculations
+function calculateLabourAttendance(labourId, siteId = null, month = null) {
+    let atts = attendance.filter(a => a.labourId === labourId);
+    if(siteId) atts = atts.filter(a => a.siteId === siteId);
+    if(month) atts = atts.filter(a => a.date.substring(0, 7) === month);
+    
+    return atts.reduce((sum, a) => sum + a.attValue, 0);
+}
+
+function calculateLabourEarnings(labourId, siteId = null, month = null) {
+    let atts = attendance.filter(a => a.labourId === labourId);
+    if(siteId) atts = atts.filter(a => a.siteId === siteId);
+    if(month) atts = atts.filter(a => a.date.substring(0, 7) === month);
+    
+    return atts.reduce((sum, a) => sum + a.amount, 0);
+}
+
+function calculateLabourPaid(labourId, month = null) {
+    let pays = payments.filter(p => p.labourId === labourId);
+    if(month) pays = pays.filter(p => p.date.substring(0, 7) === month);
+    
+    return pays.reduce((sum, p) => sum + p.amount, 0);
+}
+
+function calculateSiteLabourExpense(siteId, month = null) {
+    let atts = attendance.filter(a => a.siteId === siteId);
+    if(month) atts = atts.filter(a => a.date.substring(0, 7) === month);
+    
+    return atts.reduce((sum, a) => sum + a.amount, 0);
+}
+
+function getLabourStats(labourId, siteId = null, month = null) {
+    let atts = attendance.filter(a => a.labourId === labourId);
+    if(siteId) atts = atts.filter(a => a.siteId === siteId);
+    if(month) atts = atts.filter(a => a.date.substring(0, 7) === month);
+    
+    const full = atts.filter(a => a.type === 'full').length;
+    const half = atts.filter(a => a.type === 'half').length;
+    const overtime = atts.filter(a => a.type === 'overtime').length;
+    const absent = atts.filter(a => a.type === 'absent').length;
+    
+    return { full, half, overtime, absent, total: calculateLabourAttendance(labourId, siteId, month) };
+}
+
+// Dropdowns
+function populateDropdowns() {
+    const attLabour = document.getElementById('attLabour');
+    const payLabour = document.getElementById('payLabour');
+    const attSite = document.getElementById('attSite');
+    const paySite = document.getElementById('paySite');
+    
+    attLabour.innerHTML = '<option value="">Select Labour</option>';
+    payLabour.innerHTML = '<option value="">Select Labour</option>';
+    attSite.innerHTML = '<option value="">Select Site</option>';
+    paySite.innerHTML = '<option value="">General Payment</option>';
+    
+    labour.forEach(lab => {
+        attLabour.innerHTML += `<option value="${lab.id}">${lab.name}</option>`;
+        payLabour.innerHTML += `<option value="${lab.id}">${lab.name}</option>`;
+    });
+    
+    sites.forEach(site => {
+        attSite.innerHTML += `<option value="${site.id}">${site.name}</option>`;
+        paySite.innerHTML += `<option value="${site.id}">${site.name}</option>`;
+    });
+}
+
+function loadSettingsDropdowns() {
+    const expenseSite = document.getElementById('expenseSite');
+    expenseSite.innerHTML = '<option value="">Select Site</option>';
+    sites.forEach(site => {
+        expenseSite.innerHTML += `<option value="${site.id}">${site.name}</option>`;
+    });
+}
+
+// Dashboard
+function loadDashboard() {
+    document.getElementById('totalSites').textContent = sites.length;
+    document.getElementById('activeSites').textContent = sites.filter(s => s.status === 'working').length;
+    document.getElementById('totalLabour').textContent = labour.length;
+    
+    let totalProfit = 0;
+    sites.forEach(site => {
+        const finances = siteFinances[site.id] || {revenue: [], expenses: []};
+        const revenue = finances.revenue.reduce((sum, r) => sum + r.amount, 0);
+        const expense = finances.expenses.reduce((sum, e) => sum + e.amount, 0);
+        const labourExp = calculateSiteLabourExpense(site.id);
+        totalProfit += (revenue - expense - labourExp);
+    });
+    
+    document.getElementById('totalProfit').textContent = '₹' + totalProfit.toLocaleString();
+    document.getElementById('totalProfit').className = totalProfit >= 0 ? 'profit-positive' : 'profit-negative';
+    
+    const tbody = document.getElementById('dashboardSitesTable').querySelector('tbody');
+    tbody.innerHTML = '';
+    
+    sites.filter(s => s.status === 'working').forEach(site => {
+        const finances = siteFinances[site.id] || {revenue: [], expenses: []};
+        const revenue = finances.revenue.reduce((sum, r) => sum + r.amount, 0);
+        const expense = finances.expenses.reduce((sum, e) => sum + e.amount, 0);
+        const labourExp = calculateSiteLabourExpense(site.id);
+        const profit = revenue - expense - labourExp;
+        
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><strong>${site.name}</strong></td>
+            <td>${site.client}</td>
+            <td>${formatDate(site.startDate)}</td>
+            <td><span class="status-badge status-${site.status}">${site.status}</span></td>
+            <td class="${profit >= 0 ? 'profit-positive' : 'profit-negative'}">₹${profit.toLocaleString()}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// Site Details Modal
+function viewSiteDetail(id) {
+    const site = sites.find(s => s.id === id);
+    if(!site) return;
+    
+    const finances = siteFinances[site.id] || {revenue: [], expenses: []};
+    const totalRevenue = finances.revenue.reduce((sum, r) => sum + r.amount, 0);
+    const totalExpense = finances.expenses.reduce((sum, e) => sum + e.amount, 0);
+    const labourExpense = calculateSiteLabourExpense(site.id);
+    const profit = totalRevenue - totalExpense - labourExpense;
+    
+    // ✅ Absent ko exclude kar do
+    const labourOnSite = attendance.filter(a => a.siteId === site.id && a.type !== 'absent')
+        .map(a => a.labourId)
+        .filter((v, i, a) => a.indexOf(v) === i);
+    
+    let labourHTML = '<h3>Labour Working on This Site</h3><div class="table-container"><table><thead><tr><th>Labour</th><th>Total Days</th><th>Full</th><th>Half</th><th>Overtime</th><th>Absent</th><th>Total Earned</th></tr></thead><tbody>';
+    
+    labourOnSite.forEach(labId => {
+        const lab = labour.find(l => l.id === labId);
+        const stats = getLabourStats(labId, site.id);
+        const earned = calculateLabourEarnings(labId, site.id);
+        
+        labourHTML += `
+            <tr>
+                <td>${lab ? lab.name : 'Unknown'}</td>
+                <td>${stats.total.toFixed(1)}</td>
+                <td>${stats.full}</td>
+                <td>${stats.half}</td>
+                <td>${stats.overtime}</td>
+                <td>${stats.absent}</td>
+                <td>₹${earned.toLocaleString()}</td>
+            </tr>
+        `;
+    });
+    
+    labourHTML += '</tbody></table></div>';
+    
+    let revenueHTML = '<h3>Revenue Entries</h3>';
+    if(finances.revenue.length > 0) {
+        revenueHTML += '<div class="table-container"><table><thead><tr><th>Date</th><th>Amount</th><th>Description</th></tr></thead><tbody>';
+        finances.revenue.forEach(r => {
+            revenueHTML += `<tr><td>${formatDate(r.date)}</td><td>₹${r.amount.toLocaleString()}</td><td>${r.description}</td></tr>`;
+        });
+        revenueHTML += '</tbody></table></div>';
+    } else {
+        revenueHTML += '<p>No revenue entries yet.</p>';
+    }
+    
+    let expenseHTML = '<h3>Material/Other Expenses</h3>';
+    if(finances.expenses.length > 0) {
+        expenseHTML += '<div class="table-container"><table><thead><tr><th>Date</th><th>Amount</th><th>Description</th></tr></thead><tbody>';
+        finances.expenses.forEach(e => {
+            expenseHTML += `<tr><td>${formatDate(e.date)}</td><td>₹${e.amount.toLocaleString()}</td><td>${e.description}</td></tr>`;
+        });
+        expenseHTML += '</tbody></table></div>';
+    } else {
+        expenseHTML += '<p>No expense entries yet.</p>';
+    }
+    
+    const content = `
+        <h2>${site.name}</h2>
+        <div class="labour-detail-grid">
+            <div class="labour-stat">
+                <h4>₹${totalRevenue.toLocaleString()}</h4>
+                <p>Total Revenue</p>
+            </div>
+            <div class="labour-stat">
+                <h4>₹${totalExpense.toLocaleString()}</h4>
+                <p>Material Expense</p>
+            </div>
+            <div class="labour-stat">
+                <h4>₹${labourExpense.toLocaleString()}</h4>
+                <p>Labour Expense</p>
+            </div>
+            <div class="labour-stat">
+                <h4 class="${profit >= 0 ? 'profit-positive' : 'profit-negative'}">₹${profit.toLocaleString()}</h4>
+                <p>Net Profit/Loss</p>
+            </div>
+        </div>
+        ${labourHTML}
+        ${revenueHTML}
+        ${expenseHTML}
+    `;
+    
+    document.getElementById('siteDetailContent').innerHTML = content;
+    document.getElementById('siteDetailModal').style.display = 'block';
+}
+
+// Labour Details Modal
+function viewLabourDetail(id) {
+    const lab = labour.find(l => l.id === id);
+    if(!lab) return;
+    
+    const totalAtt = calculateLabourAttendance(lab.id);
+    const totalEarned = calculateLabourEarnings(lab.id);
+    const totalPaid = calculateLabourPaid(lab.id);
+    const balance = totalEarned - totalPaid;
+    const stats = getLabourStats(lab.id);
+    
+    const sitesWorked = attendance.filter(a => a.labourId === lab.id)
+        .map(a => a.siteId)
+        .filter((v, i, a) => a.indexOf(v) === i);
+    
+    let siteHTML = '<h3>Sites Worked On</h3><div class="table-container"><table><thead><tr><th>Site</th><th>Total Days</th><th>Full</th><th>Half</th><th>Overtime</th><th>Absent</th><th>Earned</th></tr></thead><tbody>';
+    
+    sitesWorked.forEach(siteId => {
+        const site = sites.find(s => s.id === siteId);
+        const sStats = getLabourStats(lab.id, siteId);
+        const earned = calculateLabourEarnings(lab.id, siteId);
+        
+        siteHTML += `
+            <tr>
+                <td>${site ? site.name : (siteId === null ? 'N/A (Absent)' : 'Unknown')}</td>
+                <td>${sStats.total.toFixed(1)}</td>
+                <td>${sStats.full}</td>
+                <td>${sStats.half}</td>
+                <td>${sStats.overtime}</td>
+                <td>${sStats.absent}</td>
+                <td>₹${earned.toLocaleString()}</td>
+            </tr>
+        `;
+    });
+    
+    siteHTML += '</tbody></table></div>';
+    
+    let attHTML = '<h3>Recent Attendance (Last 30 days)</h3><div class="table-container"><table><thead><tr><th>Date</th><th>Site</th><th>Type</th><th>Amount</th></tr></thead><tbody>';
+    
+    const recentAtt = attendance.filter(a => a.labourId === lab.id).slice(-30).reverse();
+    recentAtt.forEach(att => {
+        const site = sites.find(s => s.id === att.siteId);
+        attHTML += `
+            <tr>
+                <td>${formatDate(att.date)}</td>
+                <td>${att.type === 'absent' ? 'N/A (Absent)' : (site ? site.name : 'Unknown')}</td>
+                <td><span class="attendance-tag att-${att.type}">${att.type}</span></td>
+                <td>₹${att.amount.toLocaleString()}</td>
+            </tr>
+        `;
+    });
+    
+    attHTML += '</tbody></table></div>';
+    
+    let payHTML = '<h3>Payment History</h3><div class="table-container"><table><thead><tr><th>Date</th><th>Amount</th><th>Site</th><th>Notes</th></tr></thead><tbody>';
+    
+    const labPays = payments.filter(p => p.labourId === lab.id);
+    labPays.forEach(pay => {
+        const site = pay.siteId ? sites.find(s => s.id === pay.siteId) : null;
+        payHTML += `
+            <tr>
+                <td>${formatDate(pay.date)}</td>
+                <td>₹${pay.amount.toLocaleString()}</td>
+                <td>${site ? site.name : 'General'}</td>
+                <td>${pay.notes || '-'}</td>
+            </tr>
+        `;
+    });
+    
+    if(labPays.length === 0) {
+        payHTML += '<tr><td colspan="4" style="text-align: center;">No payments yet</td></tr>';
+    }
+    
+    payHTML += '</tbody></table></div>';
+    
+    const content = `
+        <h2>${lab.name}</h2>
+        <p><strong>Daily Rate:</strong> ₹${lab.rate.toLocaleString()} | <strong>Phone:</strong> ${lab.phone || 'N/A'}</p>
+        
+        <div class="labour-detail-grid">
+            <div class="labour-stat">
+                <h4>${totalAtt.toFixed(1)}</h4>
+                <p>Total Attendance</p>
+            </div>
+            <div class="labour-stat">
+                <h4>${stats.full}</h4>
+                <p>Full Days</p>
+            </div>
+            <div class="labour-stat">
+                <h4>${stats.half}</h4>
+                <p>Half Days</p>
+            </div>
+            <div class="labour-stat<h4>${stats.overtime}</h4>
+                <p>Overtime</p>
+            </div>
+            <div class="labour-stat">
+                <h4>${stats.absent}</h4>
+                <p>Absent Days</p>
+            </div>
+            <div class="labour-stat">
+                <h4>₹${totalEarned.toLocaleString()}</h4>
+                <p>Total Earned</p>
+            </div>
+            <div class="labour-stat">
+                <h4>₹${totalPaid.toLocaleString()}</h4>
+                <p>Total Paid</p>
+            </div>
+            <div class="labour-stat">
+                <h4 class="${balance >= 0 ? 'profit-positive' : 'profit-negative'}">₹${balance.toLocaleString()}</h4>
+                <p>${balance >= 0 ? 'To Pay' : 'Advance Given'}</p>
+            </div>
+        </div>
+        
+        ${siteHTML}
+        ${attHTML}
+        ${payHTML}
+    `;
+    
+    document.getElementById('labourDetailContent').innerHTML = content;
+    document.getElementById('labourDetailModal').style.display = 'block';
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
+
+// Site Finances
+function loadSiteFinances() {
+    const siteId = parseInt(document.getElementById('expenseSite').value);
+    if(!siteId) {
+        document.getElementById('siteFinanceSection').innerHTML = '';
+        return;
+    }
+    
+    const site = sites.find(s => s.id === siteId);
+    if(!siteFinances[siteId]) {
+        siteFinances[siteId] = { revenue: [], expenses: [] };
+    }
+    
+    const finances = siteFinances[siteId];
+    
+    let html = `
+        <h3>${site.name} - Financial Management</h3>
+        
+        <div class="card">
+            <h4>Add Revenue</h4>
+            <form onsubmit="addRevenue(${siteId}, event)">
+                <div class="grid-3">
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="revDate${siteId}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input type="number" id="revAmount${siteId}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" id="revDesc${siteId}" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success">Add Revenue</button>
+            </form>
+        </div>
+        
+        <div class="card">
+            <h4>Add Expense</h4>
+            <form onsubmit="addExpense(${siteId}, event)">
+                <div class="grid-3">
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="expDate${siteId}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input type="number" id="expAmount${siteId}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" id="expDesc${siteId}" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Expense</button>
+            </form>
+        </div>
+        
+        <div class="card">
+            <h4>Revenue Entries</h4>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Date</th><th>Amount</th><th>Description</th><th>Action</th></tr></thead>
+                    <tbody id="revTable${siteId}"></tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h4>Expense Entries</h4>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Date</th><th>Amount</th><th>Description</th><th>Action</th></tr></thead>
+                    <tbody id="expTable${siteId}"></tbody>
+                </table>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('siteFinanceSection').innerHTML = html;
+    
+    document.getElementById(`revDate${siteId}`).valueAsDate = new Date();
+    document.getElementById(`expDate${siteId}`).valueAsDate = new Date();
+    
+    loadFinanceTables(siteId);
+}
+
+function loadFinanceTables(siteId) {
+    const finances = siteFinances[siteId];
+    
+    const revTbody = document.getElementById(`revTable${siteId}`);
+    revTbody.innerHTML = '';
+    finances.revenue.forEach((r, idx) => {
+        revTbody.innerHTML += `
+            <tr>
+                <td>${formatDate(r.date)}</td>
+                <td>₹${r.amount.toLocaleString()}</td>
+                <td>${r.description}</td>
+                <td><button class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="deleteRevenue(${siteId}, ${idx})">Delete</button></td>
+            </tr>
+        `;
+    });
+    
+    const expTbody = document.getElementById(`expTable${siteId}`);
+    expTbody.innerHTML = '';
+    finances.expenses.forEach((e, idx) => {
+        expTbody.innerHTML += `
+            <tr>
+                <td>${formatDate(e.date)}</td>
+                <td>₹${e.amount.toLocaleString()}</td>
+                <td>${e.description}</td>
+                <td><button class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="deleteExpense(${siteId}, ${idx})">Delete</button></td>
+            </tr>
+        `;
+    });
+}
+
+function addRevenue(siteId, e) {
+    e.preventDefault();
+    const rev = {
+        date: document.getElementById(`revDate${siteId}`).value,
+        amount: parseFloat(document.getElementById(`revAmount${siteId}`).value),
+        description: document.getElementById(`revDesc${siteId}`).value
+    };
+    
+    siteFinances[siteId].revenue.push(rev);
+    saveSiteFinances();
+    loadFinanceTables(siteId);
+    loadSitesTable();
+    loadDashboard();
+    e.target.reset();
+    document.getElementById(`revDate${siteId}`).valueAsDate = new Date();
+}
+
+function addExpense(siteId, e) {
+    e.preventDefault();
+    const exp = {
+        date: document.getElementById(`expDate${siteId}`).value,
+        amount: parseFloat(document.getElementById(`expAmount${siteId}`).value),
+        description: document.getElementById(`expDesc${siteId}`).value
+    };
+    
+    siteFinances[siteId].expenses.push(exp);
+    saveSiteFinances();
+    loadFinanceTables(siteId);
+    loadSitesTable();
+    loadDashboard();
+    e.target.reset();
+    document.getElementById(`expDate${siteId}`).valueAsDate = new Date();
+}
+
+function deleteRevenue(siteId, idx) {
+    if(confirm('Delete this revenue entry?')) {
+        siteFinances[siteId].revenue.splice(idx, 1);
+        saveSiteFinances();
+        loadFinanceTables(siteId);
+        loadSitesTable();
+        loadDashboard();
+    }
+}
+
+function deleteExpense(siteId, idx) {
+    if(confirm('Delete this expense entry?')) {
+        siteFinances[siteId].expenses.splice(idx, 1);
+        saveSiteFinances();
+        loadFinanceTables(siteId);
+        loadSitesTable();
+        loadDashboard();
+    }
+}
+
+function saveSiteFinances() {
+    localStorage.setItem('youmelux_finances', JSON.stringify(siteFinances));
+}
+
+// Reports
+function updateReport() {
+    const type = document.getElementById('reportType').value;
+    const month = document.getElementById('reportMonth').value;
+    const output = document.getElementById('reportOutput');
+    
+    if(type === 'labour') {
+        document.getElementById('reportEntity').innerHTML = '<option value="">Select Labour</option>';
+        labour.forEach(lab => {
+            document.getElementById('reportEntity').innerHTML += `<option value="${lab.id}">${lab.name}</option>`;
+        });
+        document.getElementById('reportEntity').parentElement.style.display = 'block';
+    } else if(type === 'site') {
+        document.getElementById('reportEntity').innerHTML = '<option value="">Select Site</option>';
+        sites.forEach(site => {
+            document.getElementById('reportEntity').innerHTML += `<option value="${site.id}">${site.name}</option>`;
+        });
+        document.getElementById('reportEntity').parentElement.style.display = 'block';
+    } else {
+        document.getElementById('reportEntity').parentElement.style.display = 'none';
+    }
+    
+    let html = '';
+    
+    if(type === 'overall') {
+        html = generateOverallReport();
+    } else if(type === 'monthly' && month) {
+        html = generateMonthlyReport(month);
+    } else if(type === 'labour' && document.getElementById('reportEntity').value) {
+        html = generateLabourReport(parseInt(document.getElementById('reportEntity').value), month);
+    } else if(type === 'site' && document.getElementById('reportEntity').value) {
+        html = generateSiteReport(parseInt(document.getElementById('reportEntity').value), month);
+    }
+    
+    output.innerHTML = html || '<div class="card"><p>Please select all required fields to generate report.</p></div>';
+}
+
+function generateOverallReport() {
+    let totalRevenue = 0, totalMaterialExpense = 0, totalLabourExpense = 0;
+    
+    sites.forEach(site => {
+        const finances = siteFinances[site.id] || {revenue: [], expenses: []};
+        totalRevenue += finances.revenue.reduce((sum, r) => sum + r.amount, 0);
+        totalMaterialExpense += finances.expenses.reduce((sum, e) => sum + e.amount, 0);
+        totalLabourExpense += calculateSiteLabourExpense(site.id);
+    });
+    
+    const netProfit = totalRevenue - totalMaterialExpense - totalLabourExpense;
+    
+    return `
+        <div class="card">
+            <h2 class="card-title">Overall Business Summary</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>₹${totalRevenue.toLocaleString()}</h3>
+                    <p>Total Revenue</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <h3>₹${totalMaterialExpense.toLocaleString()}</h3>
+                    <p>Material Expense</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    <h3>₹${totalLabourExpense.toLocaleString()}</h3>
+                    <p>Labour Expense</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                    <h3 class="${netProfit >= 0 ? 'profit-positive' : 'profit-negative'}">₹${netProfit.toLocaleString()}</h3>
+                    <p>Net Profit/Loss</p>
+                </div>
+            </div>
+            
+            <h3>Site-wise Breakdown</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Site</th>
+                            <th>Status</th>
+                            <th>Revenue</th>
+                            <th>Material</th>
+                            <th>Labour</th>
+                            <th>Profit/Loss</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${sites.map(site => {
+                            const finances = siteFinances[site.id] || {revenue: [], expenses: []};
+                            const rev = finances.revenue.reduce((sum, r) => sum + r.amount, 0);
+                            const mat = finances.expenses.reduce((sum, e) => sum + e.amount, 0);
+                            const lab = calculateSiteLabourExpense(site.id);
+                            const profit = rev - mat - lab;
+                            return `
+                                <tr>
+                                    <td>${site.name}</td>
+                                    <td><span class="status-badge status-${site.status}">${site.status}</span></td>
+                                    <td>₹${rev.toLocaleString()}</td>
+                                    <td>₹${mat.toLocaleString()}</td>
+                                    <td>₹${lab.toLocaleString()}</td>
+                                    <td class="${profit >= 0 ? 'profit-positive' : 'profit-negative'}">₹${profit.toLocaleString()}</td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+}
+
+function generateMonthlyReport(month) {
+    let totalRevenue = 0, totalMaterialExpense = 0, totalLabourExpense = 0;
+    
+    sites.forEach(site => {
+        const finances = siteFinances[site.id] || {revenue: [], expenses: []};
+        totalRevenue += finances.revenue.filter(r => r.date.substring(0, 7) === month).reduce((sum, r) => sum + r.amount, 0);
+        totalMaterialExpense += finances.expenses.filter(e => e.date.substring(0, 7) === month).reduce((sum, e) => sum + e.amount, 0);
+        totalLabourExpense += calculateSiteLabourExpense(site.id, month);
+    });
+    
+    const netProfit = totalRevenue - totalMaterialExpense - totalLabourExpense;
+    const monthName = new Date(month + '-01').toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+    
+    return `
+        <div class="card">
+            <h2 class="card-title">Monthly Report - ${monthName}</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>₹${totalRevenue.toLocaleString()}</h3>
+                    <p>Total Revenue</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <h3>₹${totalMaterialExpense.toLocaleString()}</h3>
+                    <p>Material Expense</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    <h3>₹${totalLabourExpense.toLocaleString()}</h3>
+                    <p>Labour Expense</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                    <h3 class="${netProfit >= 0 ? 'profit-positive' : 'profit-negative'}">₹${netProfit.toLocaleString()}</h3>
+                    <p>Net Profit/Loss</p>
+                </div>
+            </div>
+            
+            <h3>Site-wise Monthly Breakdown</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Site</th>
+                            <th>Revenue</th>
+                            <th>Material</th>
+                            <th>Labour</th>
+                            <th>Profit/Loss</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${sites.map(site => {
+                            const finances = siteFinances[site.id] || {revenue: [], expenses: []};
+                            const rev = finances.revenue.filter(r => r.date.substring(0, 7) === month).reduce((sum, r) => sum + r.amount, 0);
+                            const mat = finances.expenses.filter(e => e.date.substring(0, 7) === month).reduce((sum, e) => sum + e.amount, 0);
+                            const lab = calculateSiteLabourExpense(site.id, month);
+                            const profit = rev - mat - lab;
+                            if(rev === 0 && mat === 0 && lab === 0) return '';
+                            return `
+                                <tr>
+                                    <td>${site.name}</td>
+                                    <td>₹${rev.toLocaleString()}</td>
+                                    <td>₹${mat.toLocaleString()}</td>
+                                    <td>₹${lab.toLocaleString()}</td>
+                                    <td class="${profit >= 0 ? 'profit-positive' : 'profit-negative'}">₹${profit.toLocaleString()}</td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3>Labour Monthly Summary</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Labour</th>
+                            <th>Attendance</th>
+                            <th>Full</th>
+                            <th>Half</th>
+                            <th>Overtime</th>
+                            <th>Absent</th>
+                            <th>Earned</th>
+                            <th>Paid</th>
+                            <th>Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${labour.map(lab => {
+                            const att = calculateLabourAttendance(lab.id, null, month);
+                            if(att === 0) return '';
+                            const stats = getLabourStats(lab.id, null, month);
+                            const earned = calculateLabourEarnings(lab.id, null, month);
+                            const paid = calculateLabourPaid(lab.id, month);
+                            const balance = earned - paid;
+                            return `
+                                <tr>
+                                    <td>${lab.name}</td>
+                                    <td>${att.toFixed(1)}</td>
+                                    <td>${stats.full}</td>
+                                    <td>${stats.half}</td>
+                                    <td>${stats.overtime}</td>
+                                    <td>${stats.absent}</td>
+                                    <td>₹${earned.toLocaleString()}</td>
+                                    <td>₹${paid.toLocaleString()}</td>
+                                    <td class="${balance >= 0 ? 'profit-positive' : 'profit-negative'}">₹${balance.toLocaleString()}</td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+}
+
+function generateLabourReport(labourId, month) {
+    const lab = labour.find(l => l.id === labourId);
+    if(!lab) return '';
+    
+    const totalAtt = calculateLabourAttendance(labourId, null, month);
+    const totalEarned = calculateLabourEarnings(labourId, null, month);
+    const totalPaid = calculateLabourPaid(labourId, month);
+    const balance = totalEarned - totalPaid;
+    const stats = getLabourStats(labourId, null, month);
+    
+    const periodText = month ? new Date(month + '-01').toLocaleDateString('en-IN', { month: 'long', year: 'numeric' }) : 'Overall';
+    
+    let atts = attendance.filter(a => a.labourId === labourId);
+    if(month) atts = atts.filter(a => a.date.substring(0, 7) === month);
+    
+    return `
+        <div class="card">
+            <h2 class="card-title">${lab.name} - Detailed Report (${periodText})</h2>
+            <div class="labour-detail-grid">
+                <div class="labour-stat">
+                    <h4>${totalAtt.toFixed(1)}</h4>
+                    <p>Total Attendance</p>
+                </div>
+                <div class="labour-stat">
+                    <h4>${stats.full}</h4>
+                    <p>Full Days</p>
+                </div>
+                <div class="labour-stat">
+                    <h4>${stats.half}</h4>
+                    <p>Half Days</p>
+                </div>
+                <div class="labour-stat">
+                    <h4>${stats.overtime}</h4>
+                    <p>Overtime</p>
+                </div>
+                <div class="labour-stat">
+                    <h4>${stats.absent}</h4>
+                    <p>Absent Days</p>
+                </div>
+                <div class="labour-stat">
+                    <h4>₹${totalEarned.toLocaleString()}</h4>
+                    <p>Total Earned</p>
+                </div>
+                <div class="labour-stat">
+                    <h4>₹${totalPaid.toLocaleString()}</h4>
+                    <p>Total Paid</p>
+                </div>
+                <div class="labour-stat">
+                    <h4 class="${balance >= 0 ? 'profit-positive' : 'profit-negative'}">₹${balance.toLocaleString()}</h4>
+                    <p>${balance >= 0 ? 'To Pay' : 'Advance'}</p>
+                </div>
+            </div>
+            
+            <h3>Site-wise Breakdown</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Site</th>
+                            <th>Attendance</th>
+                            <th>Full</th>
+                            <th>Half</th>
+                            <th>Overtime</th>
+                            <th>Absent</th>
+                            <th>Earned</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${[...new Set(atts.map(a => a.siteId))].map(siteId => {
+                            const site = sites.find(s => s.id === siteId);
+                            const siteStats = getLabourStats(labourId, siteId, month);
+                            const earned = calculateLabourEarnings(labourId, siteId, month);
+                            return `
+                                <tr>
+                                    <td>${site ? site.name : (siteId === null ? 'N/A (Absent)' : 'Unknown')}</td>
+                                    <td>${siteStats.total.toFixed(1)}</td>
+                                    <td>${siteStats.full}</td>
+                                    <td>${siteStats.half}</td>
+                                    <td>${siteStats.overtime}</td>
+                                    <td>${siteStats.absent}</td>
+                                    <td>₹${earned.toLocaleString()}</td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3>Daily Attendance Details</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Site</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${atts.map(att => {
+                            const site = sites.find(s => s.id === att.siteId);
+                            return `
+                                <tr>
+                                    <td>${formatDate(att.date)}</td>
+                                    <td>${att.type === 'absent' ? 'N/A (Absent)' : (site ? site.name : 'Unknown')}</td>
+                                    <td><span class="attendance-tag att-${att.type}">${att.type}</span></td>
+                                    <td>₹${att.amount.toLocaleString()}</td>
+                                    <td>${att.notes || '-'}</td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3>Payment History</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Site</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${payments.filter(p => p.labourId === labourId && (!month || p.date.substring(0, 7) === month)).map(pay => {
+                            const site = pay.siteId ? sites.find(s => s.id === pay.siteId) : null;
+                            return `
+                                <tr>
+                                    <td>${formatDate(pay.date)}</td>
+                                    <td>₹${pay.amount.toLocaleString()}</td>
+                                    <td>${site ? site.name : 'General'}</td>
+                                    <td>${pay.notes || '-'}</td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+}
+
+function generateSiteReport(siteId, month) {
+    const site = sites.find(s => s.id === siteId);
+    if(!site) return '';
+    
+    const finances = siteFinances[siteId] || {revenue: [], expenses: []};
+    let revenue = finances.revenue;
+    let expenses = finances.expenses;
+    
+    if(month) {
+        revenue = revenue.filter(r => r.date.substring(0, 7) === month);
+        expenses = expenses.filter(e => e.date.substring(0, 7) === month);
+    }
+    
+    const totalRevenue = revenue.reduce((sum, r) => sum + r.amount, 0);
+    const totalMaterialExpense = expenses.reduce((sum, e) => sum + e.amount, 0);
+    const totalLabourExpense = calculateSiteLabourExpense(siteId, month);
+    const netProfit = totalRevenue - totalMaterialExpense - totalLabourExpense;
+    
+    const periodText = month ? new Date(month + '-01').toLocaleDateString('en-IN', { month: 'long', year: 'numeric' }) : 'Overall';
+    
+    let atts = attendance.filter(a => a.siteId === siteId);
+    if(month) atts = atts.filter(a => a.date.substring(0, 7) === month);
+    
+    return `
+        <div class="card">
+            <h2 class="card-title">${site.name} - Detailed Report (${periodText})</h2>
+            <p><strong>Client:</strong> ${site.client} | <strong>Started:</strong> ${formatDate(site.startDate)} | <strong>Status:</strong> <span class="status-badge status-${site.status}">${site.status}</span></p>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>₹${totalRevenue.toLocaleString()}</h3>
+                    <p>Total Revenue</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <h3>₹${totalMaterialExpense.toLocaleString()}</h3>
+                    <p>Material Expense</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    <h3>₹${totalLabourExpense.toLocaleString()}</h3>
+                    <p>Labour Expense</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                    <h3 class="${netProfit >= 0 ? 'profit-positive' : 'profit-negative'}">₹${netProfit.toLocaleString()}</h3>
+                    <p>Net Profit/Loss</p>
+                </div>
+            </div>
+            
+            <h3>Labour Details</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Labour</th>
+                            <th>Attendance</th>
+                            <th>Full</th>
+                            <th>Half</th>
+                            <th>Overtime</th>
+                            <th>Absent</th>
+                            <th>Total Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${[...new Set(atts.map(a => a.labourId))].map(labId => {
+                            const lab = labour.find(l => l.id === labId);
+                            const stats = getLabourStats(labId, siteId, month);
+                            const earned = calculateLabourEarnings(labId, siteId, month);
+                            return `
+                                <tr>
+                                    <td>${lab ? lab.name : 'Unknown'}</td>
+                                    <td>${stats.total.toFixed(1)}</td>
+                                    <td>${stats.full}</td>
+                                    <td>${stats.half}</td>
+                                    <td>${stats.overtime}</td>
+                                    <td>${stats.absent}</td>
+                                    <td>₹${earned.toLocaleString()}</td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3>Revenue Entries</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${revenue.map(r => `
+                            <tr>
+                                <td>${formatDate(r.date)}</td>
+                                <td>₹${r.amount.toLocaleString()}</td>
+                                <td>${r.description}</td>
+                            </tr>
+                        `).join('') || '<tr><td colspan="3" style="text-align: center;">No revenue entries</td></tr>'}
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3>Material/Other Expenses</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${expenses.map(e => `
+                            <tr>
+                                <td>${formatDate(e.date)}</td>
+                                <td>₹${e.amount.toLocaleString()}</td>
+                                <td>${e.description}</td>
+                            </tr>
+                        `).join('') || '<tr><td colspan="3" style="text-align: center;">No expense entries</td></tr>'}
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3>Daily Labour Attendance</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Labour</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${atts.map(att => {
+                            const lab = labour.find(l => l.id === att.labourId);
+                            return `
+                                <tr>
+                                    <td>${formatDate(att.date)}</td>
+                                    <td>${lab ? lab.name : 'Unknown'}</td>
+                                    <td><span class="attendance-tag att-${att.type}">${att.type}</span></td>
+                                    <td>₹${att.amount.toLocaleString()}</td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+}
+
+// Data Export/Import
+function exportData() {
+    const data = {
+        sites: sites,
+        labour: labour,
+        attendance: attendance,
+        payments: payments,
+        siteFinances: siteFinances,
+        exportDate: new Date().toISOString()
+    };
+    
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `youmelux_backup_${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    alert('Data exported successfully!');
+}
+
+function importData(event) {
+    const file = event.target.files[0];
+    if(!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const data = JSON.parse(e.target.result);
+            
+            if(confirm('This will replace all existing data. Are you sure?')) {
+                sites = data.sites || [];
+                labour = data.labour || [];
+                attendance = data.attendance || [];
+                payments = data.payments || [];
+                siteFinances = data.siteFinances || {};
+                
+                saveSites();
+                saveLabour();
+                saveAttendance();
+                savePayments();
+                saveSiteFinances();
+                
+                loadDashboard();
+                loadSitesTable();
+                loadLabourTable();
+                populateDropdowns();
+                
+                alert('Data imported successfully!');
+            }
+        } catch(err) {
+            alert('Error importing data: ' + err.message);
+        }
+    };
+    reader.readAsText(file);
+}
+
+function clearAllData() {
+    if(confirm('Are you sure you want to delete ALL data? This cannot be undone!')) {
+        if(confirm('Last warning! This will delete everything. Continue?')) {
+            localStorage.clear();
+            location.reload();
+        }
+    }
+}
+
+// Utility Functions
+function formatDate(dateStr) {
+    if(!dateStr) return '-';
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+// Search functionality
+document.getElementById('siteSearch').addEventListener('input', function() {
+    const search = this.value.toLowerCase();
+    document.querySelectorAll('#sitesTable tbody tr').forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(search) ? '' : 'none';
+    });
+});
+
+document.getElementById('labourSearch').addEventListener('input', function() {
+    const search = this.value.toLowerCase();
+    document.querySelectorAll('#labourTable tbody tr').forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(search) ? '' : 'none';
+    });
+});
+
+// Close modal on outside click
+window.onclick = function(event) {
+    if(event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+    }
+}
+</script>
+</body>
+</html>

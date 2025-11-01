@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Time Tracker Pro</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #1e293b;
+            --dark-light: #334155;
+            --light: #f8fafc;
+            --border: #e2e8f0;
+            --text: #0f172a;
+            --text-light: #64748b;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --shadow-lg: 0 20px 50px rgba(0,0,0,0.15);
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #4facfe);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 20s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            border: 1px solid rgba(255,255,255,0.5);
+            animation: slideInUp 0.6s ease;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.5);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .logo-text h1 {
+            font-size: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text p {
+            color: var(--text-light);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+        }
+
+        .btn:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.95);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.5);
+            animation: slideInUp 0.6s ease;
+            animation-fill-mode: both;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 70px rgba(0,0,0,0.25);
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: rgba(248, 250, 252, 0.8);
+            padding: 8px;
+            border-radius: 18px;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 14px 24px;
+            border: none;
+            background: transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: var(--text-light);
+            font-size: 15px;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+            transform: scale(1.05);
+        }
+
+        .activity-list {
+            max-height: 550px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .activity-item {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.9) 100%);
+            padding: 25px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--primary);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            animation: slideInLeft 0.5s ease;
+        }
+
+        .activity-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .activity-item:hover::before {
+            left: 100%;
+        }
+
+        .activity-item:hover {
+            transform: translateX(10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .activity-category {
+            font-weight: 800;
+            font-size: 20px;
+            color: var(--dark);
+        }
+
+        .activity-time {
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .activity-notes {
+            color: var(--text-light);
+            font-size: 15px;
+            line-height: 1.7;
+            margin-top: 10px;
+            padding: 12px;
+            background: rgba(248, 250, 252, 0.6);
+            border-radius: 10px;
+        }
+
+        .activity-date {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 25px;
+            border-radius: 18px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.5);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.95;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 900;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .category-list {
+            max-height: 450px;
+            overflow-y: auto;
+        }
+
+        .category-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px;
+            background: linear-gradient(135deg, rgba(248,250,252,0.8), rgba(241,245,249,0.8));
+            border-radius: 15px;
+            margin-bottom: 12px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid transparent;
+        }
+
+        .category-item:hover {
+            background: rgba(226, 232, 240, 0.8);
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .category-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+        }
+
+        .category-color {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .category-color:hover {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        .category-name {
+            font-weight: 700;
+            color: var(--dark);
+            font-size: 16px;
+        }
+
+        .category-time {
+            font-size: 14px;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            padding: 45px;
+            border-radius: 25px;
+            max-width: 650px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+            animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(100px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .modal-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .close-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--light);
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+
+        .close-btn:hover {
+            background: var(--danger);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .form-group {
+            margin-bottom: 28px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 700;
+            color: var(--dark);
+            font-size: 15px;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--border);
+            border-radius: 15px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            background: rgba(248, 250, 252, 0.5);
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.1);
+            background: white;
+            transform: scale(1.02);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .time-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        
+
+        .notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: white;
+            padding: 22px 28px;
+            border-radius: 18px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            display: none;
+            align-items: center;
+            gap: 15px;
+            z-index: 2000;
+            animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-left: 5px solid var(--success);
+        }
+
+        .notification.active {
+            display: flex;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(200px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .notification.success {
+            border-left-color: var(--success);
+        }
+
+        .notification.error {
+            border-left-color: var(--danger);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--text-light);
+        }
+
+        .empty-icon {
+            font-size: 72px;
+            margin-bottom: 20px;
+            opacity: 0.6;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .color-picker-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .color-option {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 4px solid transparent;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .color-option:hover, .color-option.selected {
+            border-color: var(--dark);
+            transform: scale(1.15);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        }
+
+        .delete-btn {
+            padding: 10px 16px;
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .limit-indicator {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            animation: slideInUp 0.3s ease;
+        }
+
+        .limit-ok {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #065f46;
+        }
+
+        .limit-warning {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+        }
+
+        .limit-exceeded {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+        }
+
+        .progress-ring {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+        }
+
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.5s ease;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(248, 250, 252, 0.5);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        }
+
+        .streak-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+        }
+        .charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+    .charts-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px;
+    }
+}
+
+        @media (max-width: 1200px) {
+    .main-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .card {
+        padding: 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .header {
+        padding: 15px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .logo {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .logo-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 26px;
+    }
+
+    .logo-text h1 {
+        font-size: 22px;
+    }
+
+    .logo-text p {
+        font-size: 12px;
+    }
+
+    .header-actions {
+        width: 100%;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 14px;
+        justify-content: center;
+    }
+
+    .card {
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .card-title {
+        font-size: 20px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .stat-card {
+        padding: 18px;
+    }
+
+    .stat-value {
+        font-size: 28px;
+    }
+
+    .tabs {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .tab {
+        width: 100%;
+        text-align: center;
+    }
+
+    .activity-list {
+        max-height: 400px;
+    }
+
+    .activity-item {
+        padding: 18px;
+    }
+
+    .activity-category {
+        font-size: 18px;
+    }
+
+    .activity-time {
+        font-size: 16px;
+    }
+
+    .category-list {
+        max-height: 350px;
+    }
+
+    .category-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .category-info {
+        width: 100%;
+    }
+
+    .delete-btn {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .modal-content {
+        padding: 25px;
+        max-width: 95%;
+        margin: 10px;
+    }
+
+    .modal-title {
+        font-size: 22px;
+    }
+
+    .time-inputs {
+        grid-template-columns: 1fr;
+    }
+
+    .color-picker-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+    }
+
+    .notification {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        padding: 15px 18px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-text h1 {
+        font-size: 18px;
+    }
+
+    .stat-value {
+        font-size: 24px;
+    }
+
+    .activity-category {
+        font-size: 16px;
+    }
+
+    .color-picker-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .form-input, .form-select, .form-textarea {
+        font-size: 14px;
+        padding: 14px 16px;
+    }
+}
+
+        .loading-shimmer {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">⏱️</div>
+                <div class="logo-text">
+                    <h1>Time Tracker Pro</h1>
+                    <p>Track Your Time, Master Your Life</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-success" onclick="openAddModal()">
+                    ➕ Add Activity
+                </button>
+                <button class="btn btn-secondary" onclick="openCategoryModal()">
+                    📂 Categories
+                </button>
+                <button class="btn btn-secondary" onclick="openSettingsModal()">
+                    ⚙️ Settings
+                </button>
+                <button class="btn btn-secondary" onclick="window.location.href='index.html'">
+                    🏠 Back to Home
+                </button>
+            </div>
+            
+        </div>
+
+        <!-- Main Grid -->
+        <div class="main-grid">
+            <!-- Activities Section -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">📊 Your Activities</h2>
+                    <input type="date" id="dateFilter" class="form-input" style="width: auto;" onchange="filterActivities()">
+                </div>
+
+                <div class="tabs">
+                    <button class="tab active" onclick="changeView('daily')">📅 Daily</button>
+                    <button class="tab" onclick="changeView('weekly')">📆 Weekly</button>
+                    <button class="tab" onclick="changeView('monthly')">🗓️ Monthly</button>
+                </div>
+
+                <div id="activityList" class="activity-list"></div>
+            </div>
+
+            <!-- Stats Sidebar -->
+            <div>
+                <div class="card" style="margin-bottom: 30px;">
+                    <div class="card-header">
+                        <h2 class="card-title">📈 Stats</h2>
+                        <span id="streakBadge" class="streak-badge"></span>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">⏰ Total Time</div>
+                            <div class="stat-value" id="totalTime">0h</div>
+                        </div>
+                        <div class="stat-card" style="background: linear-gradient(135deg, #10b981, #059669);">
+                            <div class="stat-label">📝 Activities</div>
+                            <div class="stat-value" id="totalActivities">0</div>
+                        </div>
+                        <div class="stat-card" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                            <div class="stat-label">🎯 Avg/Day</div>
+                            <div class="stat-value" id="avgTime">0h</div>
+                        </div>
+                        <div class="stat-card" style="background: linear-gradient(135deg, #ec4899, #db2777);">
+                            <div class="stat-label">🔥 Streak</div>
+                            <div class="stat-value" id="streakDays">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">🎯 Categories</h2>
+                    </div>
+                    <div id="categoryStats" class="category-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Activity Modal -->
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">➕ Add New Activity</h2>
+                <button class="close-btn" onclick="closeAddModal()">✖️</button>
+            </div>
+            <form onsubmit="addActivity(event)">
+                <div class="form-group">
+                    <label class="form-label">📂 Category</label>
+                    <select id="activityCategory" class="form-select" required></select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">⏰ Time Spent</label>
+                    <div class="time-inputs">
+                        <div>
+                            <input type="number" id="activityHours" class="form-input" placeholder="Hours" min="0" value="0">
+                        </div>
+                        <div>
+                            <input type="number" id="activityMinutes" class="form-input" placeholder="Minutes" min="0" max="59" value="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">📅 Date</label>
+                    <input type="date" id="activityDate" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">📝 Notes (Optional)</label>
+                    <textarea id="activityNotes" class="form-textarea" placeholder="Add details about this activity..."></textarea>
+                </div>
+                <div id="limitWarning"></div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                    ✅ Add Activity
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Category Management Modal -->
+    <div id="categoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">📂 Manage Categories</h2>
+                <button class="close-btn" onclick="closeCategoryModal()">✖️</button>
+            </div>
+            
+            <form onsubmit="addCategory(event)" style="margin-bottom: 30px;">
+                <div class="form-group">
+                    <label class="form-label">Category Name</label>
+                    <input type="text" id="newCategoryName" class="form-input" placeholder="e.g., Work, Gaming, Exercise" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Choose Color</label>
+                    <div class="color-picker-grid">
+                        <div class="color-option selected" style="background: #3b82f6;" data-color="#3b82f6"></div>
+                        <div class="color-option" style="background: #8b5cf6;" data-color="#8b5cf6"></div>
+                        <div class="color-option" style="background: #10b981;" data-color="#10b981"></div>
+                        <div class="color-option" style="background: #f59e0b;" data-color="#f59e0b"></div>
+                        <div class="color-option" style="background: #ef4444;" data-color="#ef4444"></div>
+                        <div class="color-option" style="background: #ec4899;" data-color="#ec4899"></div>
+                        <div class="color-option" style="background: #06b6d4;" data-color="#06b6d4"></div>
+                        <div class="color-option" style="background: #84cc16;" data-color="#84cc16"></div>
+                        <div class="color-option" style="background: #f97316;" data-color="#f97316"></div>
+                        <div class="color-option" style="background: #6366f1;" data-color="#6366f1"></div>
+                        <div class="color-option" style="background: #14b8a6;" data-color="#14b8a6"></div>
+                        <div class="color-option" style="background: #a855f7;" data-color="#a855f7"></div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                    ➕ Add Category
+                </button>
+            </form>
+
+            <div style="border-top: 2px solid var(--border); padding-top: 20px;">
+                <h3 style="margin-bottom: 15px; color: var(--dark); font-size: 18px;">Your Categories</h3>
+                <div id="categoryList" class="category-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">⚙️ Settings</h2>
+                <button class="close-btn" onclick="closeSettingsModal()">✖️</button>
+            </div>
+
+            <div style="margin-bottom: 30px;">
+                <h3 style="margin-bottom: 20px; color: var(--dark); font-size: 20px;">⏰ Time Limits (Optional)</h3>
+                <div id="timeLimitsList"></div>
+            </div>
+
+            <div style="border-top: 2px solid var(--border); padding-top: 30px;">
+                <h3 style="margin-bottom: 20px; color: var(--dark); font-size: 20px;">💾 Data Management</h3>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <button class="btn btn-primary" onclick="exportData()">
+                        📥 Export Data
+                    </button>
+                    <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">
+                        📤 Import Data
+                    </button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+                    <button class="btn btn-danger" onclick="clearAllData()">
+                        🗑️ Clear All Data
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <span id="notificationText"></span>
+    </div>
+
+    <script>
+        let activities = [];
+        let categories = [];
+        let timeLimits = {};
+        let currentView = 'daily';
+        let selectedColor = '#3b82f6';
+        let pieChart, barChart, lineChart;
+
+        // Initialize
+        function init() {
+            loadData();
+            document.getElementById('dateFilter').value = new Date().toISOString().split('T')[0];
+            document.getElementById('activityDate').value = new Date().toISOString().split('T')[0];
+           
+            renderEverything();
+            setupColorPicker();
+        }
+
+        // Load data from localStorage
+        function loadData() {
+            const stored = localStorage.getItem('timeTrackerData');
+            if (stored) {
+                const data = JSON.parse(stored);
+                activities = data.activities || [];
+                categories = data.categories || getDefaultCategories();
+                timeLimits = data.timeLimits || {};
+            } else {
+                categories = getDefaultCategories();
+            }
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('timeTrackerData', JSON.stringify({
+                activities,
+                categories,
+                timeLimits
+            }));
+        }
+
+        // Default categories
+        function getDefaultCategories() {
+            return [
+                { id: 'work', name: 'Work', color: '#10b981' },
+                { id: 'phone', name: 'Phone Use', color: '#3b82f6' },
+                { id: 'gaming', name: 'Gaming', color: '#8b5cf6' },
+                { id: 'sleep', name: 'Sleep', color: '#6366f1' }
+            ];
+        }
+
+        
+
+        // Calculate Streak
+        function calculateStreak() {
+            if (activities.length === 0) return 0;
+
+            const uniqueDates = [...new Set(activities.map(a => a.date))].sort().reverse();
+            let streak = 0;
+            const today = new Date().toISOString().split('T')[0];
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+            if (uniqueDates[0] !== today && uniqueDates[0] !== yesterdayStr) {
+                return 0;
+            }
+
+            let currentDate = new Date(uniqueDates[0]);
+            for (let i = 0; i < uniqueDates.length; i++) {
+                const expectedDate = new Date(currentDate);
+                expectedDate.setDate(currentDate.getDate() - i);
+                const expectedStr = expectedDate.toISOString().split('T')[0];
+
+                if (uniqueDates[i] === expectedStr) {
+                    streak++;
+                } else {
+                    break;
+                }
+            }
+
+            return streak;
+        }
+
+        // Setup color picker
+        function setupColorPicker() {
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.color-option').forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedColor = this.dataset.color;
+                });
+            });
+        }
+
+        // Open/Close Modals
+        function openAddModal() {
+            populateCategorySelect();
+            document.getElementById('addModal').classList.add('active');
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').classList.remove('active');
+            document.getElementById('activityHours').value = '0';
+            document.getElementById('activityMinutes').value = '0';
+            document.getElementById('activityNotes').value = '';
+            document.getElementById('limitWarning').innerHTML = '';
+        }
+
+        function openCategoryModal() {
+            renderCategoryList();
+            document.getElementById('categoryModal').classList.add('active');
+        }
+
+        function closeCategoryModal() {
+            document.getElementById('categoryModal').classList.remove('active');
+        }
+
+        function openSettingsModal() {
+            renderTimeLimits();
+            document.getElementById('settingsModal').classList.add('active');
+        }
+
+        function closeSettingsModal() {
+            document.getElementById('settingsModal').classList.remove('active');
+        }
+
+        // Add Activity
+        function addActivity(e) {
+            e.preventDefault();
+            const category = document.getElementById('activityCategory').value;
+            const hours = parseInt(document.getElementById('activityHours').value) || 0;
+            const minutes = parseInt(document.getElementById('activityMinutes').value) || 0;
+            const date = document.getElementById('activityDate').value;
+            const notes = document.getElementById('activityNotes').value;
+
+            if (hours === 0 && minutes === 0) {
+                showNotification('Please enter time spent! ⚠️', 'error');
+                return;
+            }
+
+            const totalMinutes = (hours * 60) + minutes;
+            const existingActivity = activities.find(a => a.category === category && a.date === date);
+            
+            if (existingActivity) {
+                existingActivity.minutes += totalMinutes;
+                if (notes) {
+                    existingActivity.notes = existingActivity.notes 
+                        ? `${existingActivity.notes}\n• ${notes}` 
+                        : notes;
+                }
+                existingActivity.timestamp = new Date().toISOString();
+                showNotification('Time added to existing activity! ✅', 'success');
+            } else {
+                activities.push({
+                    id: Date.now(),
+                    category,
+                    minutes: totalMinutes,
+                    date,
+                    notes,
+                    timestamp: new Date().toISOString()
+                });
+                showNotification('Activity added successfully! 🎉', 'success');
+            }
+
+            saveData();
+            renderEverything();
+            closeAddModal();
+        }
+
+        // Add Category
+        function addCategory(e) {
+            e.preventDefault();
+            const name = document.getElementById('newCategoryName').value.trim();
+            
+            if (!name) {
+                showNotification('Please enter category name! ⚠️', 'error');
+                return;
+            }
+
+            const id = name.toLowerCase().replace(/\s+/g, '_');
+            
+            if (categories.find(c => c.id === id)) {
+                showNotification('Category already exists! ⚠️', 'error');
+                return;
+            }
+
+            categories.push({ id, name, color: selectedColor });
+            saveData();
+            renderCategoryList();
+            renderEverything();
+            document.getElementById('newCategoryName').value = '';
+            showNotification('Category added successfully! 🎉', 'success');
+        }
+
+        // Delete Category
+        function deleteCategory(categoryId) {
+            if (confirm('Are you sure? All activities in this category will remain but you cannot add new ones.')) {
+                categories = categories.filter(c => c.id !== categoryId);
+                saveData();
+                renderCategoryList();
+                renderEverything();
+                showNotification('Category deleted! 🗑️', 'success');
+            }
+        }
+
+        // Populate category select
+        function populateCategorySelect() {
+            const select = document.getElementById('activityCategory');
+            select.innerHTML = categories.map(cat => 
+                `<option value="${cat.id}">${cat.name}</option>`
+            ).join('');
+        }
+
+        // Render category list
+        function renderCategoryList() {
+            const list = document.getElementById('categoryList');
+            if (categories.length === 0) {
+                list.innerHTML = '<div class="empty-state"><div class="empty-icon">📂</div><p>No categories yet</p></div>';
+                return;
+            }
+
+            list.innerHTML = categories.map(cat => `
+                <div class="category-item">
+                    <div class="category-info">
+                        <div class="category-color" style="background: ${cat.color};"></div>
+                        <span class="category-name">${cat.name}</span>
+                    </div>
+                    <button class="delete-btn" onclick="deleteCategory('${cat.id}')">Delete</button>
+                </div>
+            `).join('');
+        }
+
+        // Render time limits
+        function renderTimeLimits() {
+            const list = document.getElementById('timeLimitsList');
+            list.innerHTML = categories.map(cat => {
+                const limit = timeLimits[cat.id] || '';
+                return `
+                    <div class="form-group">
+                        <label class="form-label">${cat.name} (hours per day)</label>
+                        <input type="number" class="form-input" placeholder="No limit" min="0" step="0.5" 
+                            value="${limit}" onchange="setTimeLimit('${cat.id}', this.value)">
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Set time limit
+        function setTimeLimit(categoryId, hours) {
+            if (hours) {
+                timeLimits[categoryId] = parseFloat(hours);
+            } else {
+                delete timeLimits[categoryId];
+            }
+            saveData();
+            showNotification('Time limit updated! ✅', 'success');
+        }
+
+        // Check time limit
+        function checkTimeLimit() {
+            const category = document.getElementById('activityCategory').value;
+            const hours = parseInt(document.getElementById('activityHours').value) || 0;
+            const minutes = parseInt(document.getElementById('activityMinutes').value) || 0;
+            const date = document.getElementById('activityDate').value;
+            
+            const limit = timeLimits[category];
+            if (!limit) {
+                document.getElementById('limitWarning').innerHTML = '';
+                return;
+            }
+
+            const todayActivities = activities.filter(a => a.category === category && a.date === date);
+            const todayMinutes = todayActivities.reduce((sum, a) => sum + a.minutes, 0);
+            const newTotal = todayMinutes + (hours * 60) + minutes;
+            const limitMinutes = limit * 60;
+
+            let html = '';
+            if (newTotal > limitMinutes) {
+                html = `<div class="limit-indicator limit-exceeded">⚠️ Warning: This will exceed your daily limit of ${limit}h!</div>`;
+            } else if (newTotal > limitMinutes * 0.8) {
+                html = `<div class="limit-indicator limit-warning">⚠️ You're approaching your daily limit of ${limit}h</div>`;
+            } else {
+                html = `<div class="limit-indicator limit-ok">✅ Within your daily limit of ${limit}h</div>`;
+            }
+            
+            document.getElementById('limitWarning').innerHTML = html;
+        }
+
+        // Filter activities by view
+        function getFilteredActivities() {
+            const selectedDate = document.getElementById('dateFilter').value;
+            const date = new Date(selectedDate);
+
+            if (currentView === 'daily') {
+                return activities.filter(a => a.date === selectedDate);
+            } else if (currentView === 'weekly') {
+                const weekStart = new Date(date);
+                weekStart.setDate(date.getDate() - date.getDay());
+                const weekEnd = new Date(weekStart);
+                weekEnd.setDate(weekStart.getDate() + 6);
+                
+                return activities.filter(a => {
+                    const actDate = new Date(a.date);
+                    return actDate >= weekStart && actDate <= weekEnd;
+                });
+            } else if (currentView === 'monthly') {
+                return activities.filter(a => {
+                    const actDate = new Date(a.date);
+                    return actDate.getMonth() === date.getMonth() && 
+                           actDate.getFullYear() === date.getFullYear();
+                });
+            }
+        }
+
+        // Render activities
+        function renderActivities() {
+            const list = document.getElementById('activityList');
+            const filtered = getFilteredActivities();
+
+            if (filtered.length === 0) {
+                list.innerHTML = '<div class="empty-state"><div class="empty-icon">📝</div><p>No activities yet. Add your first activity!</p></div>';
+                return;
+            }
+
+            filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            list.innerHTML = filtered.map(activity => {
+                const category = categories.find(c => c.id === activity.category);
+                const hours = Math.floor(activity.minutes / 60);
+                const minutes = activity.minutes % 60;
+                const timeStr = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+
+                return `
+                    <div class="activity-item" style="border-left-color: ${category?.color || '#6366f1'};">
+                        <div class="activity-header">
+                            <div class="activity-category">${category?.name || 'Unknown'}</div>
+                            <div class="activity-time">${timeStr}</div>
+                        </div>
+                        ${activity.notes ? `<div class="activity-notes">${activity.notes}</div>` : ''}
+                        <div class="activity-date">📅 ${new Date(activity.date).toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render stats
+        function renderStats() {
+            const filtered = getFilteredActivities();
+            const totalMinutes = filtered.reduce((sum, a) => sum + a.minutes, 0);
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+
+            document.getElementById('totalTime').textContent = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+            document.getElementById('totalActivities').textContent = filtered.length;
+
+            // Calculate average per day
+            const uniqueDates = [...new Set(filtered.map(a => a.date))];
+            const avgMinutes = uniqueDates.length > 0 ? totalMinutes / uniqueDates.length : 0;
+            const avgHours = Math.floor(avgMinutes / 60);
+            const avgMins = Math.round(avgMinutes % 60);
+            document.getElementById('avgTime').textContent = avgHours > 0 ? `${avgHours}h ${avgMins}m` : `${avgMins}m`;
+
+            // Streak
+            const streak = calculateStreak();
+            document.getElementById('streakDays').textContent = `${streak} days`;
+            
+            const streakBadge = document.getElementById('streakBadge');
+            if (streak > 0) {
+                streakBadge.innerHTML = `🔥 ${streak} Day Streak!`;
+                streakBadge.style.display = 'inline-flex';
+            } else {
+                streakBadge.style.display = 'none';
+            }
+        }
+
+        // Render category stats
+        function renderCategoryStats() {
+            const statsDiv = document.getElementById('categoryStats');
+            const filtered = getFilteredActivities();
+            
+            const categoryTotals = {};
+            filtered.forEach(activity => {
+                if (!categoryTotals[activity.category]) {
+                    categoryTotals[activity.category] = 0;
+                }
+                categoryTotals[activity.category] += activity.minutes;
+            });
+
+            const sortedCategories = Object.entries(categoryTotals)
+                .sort((a, b) => b[1] - a[1])
+                .map(([catId, minutes]) => {
+                    const category = categories.find(c => c.id === catId);
+                    const hours = Math.floor(minutes / 60);
+                    const mins = minutes % 60;
+                    const timeStr = hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
+                    
+                    let limitInfo = '';
+                    const limit = timeLimits[catId];
+                    if (limit && currentView === 'daily') {
+                        const limitMinutes = limit * 60;
+                        const remaining = limitMinutes - minutes;
+                        
+                        if (remaining > 0) {
+                            const remHours = Math.floor(remaining / 60);
+                            const remMins = remaining % 60;
+                            const remStr = remHours > 0 ? `${remHours}h ${remMins}m` : `${remMins}m`;
+                            limitInfo = `<div style="font-size: 12px; color: var(--success); margin-top: 4px; font-weight: 600;">⏳ ${remStr} remaining</div>`;
+                        } else {
+                            const overMinutes = Math.abs(remaining);
+                            const overHours = Math.floor(overMinutes / 60);
+                            const overMins = overMinutes % 60;
+                            const overStr = overHours > 0 ? `${overHours}h ${overMins}m` : `${overMins}m`;
+                            limitInfo = `<div style="font-size: 12px; color: var(--danger); margin-top: 4px; font-weight: 600;">⚠️ ${overStr} over limit</div>`;
+                        }
+                    }
+                    
+                    return { category, time: timeStr, minutes, limitInfo };
+                });
+
+            if (sortedCategories.length === 0) {
+                statsDiv.innerHTML = '<div class="empty-state"><div class="empty-icon">📊</div><p>No data yet</p></div>';
+                return;
+            }
+
+            statsDiv.innerHTML = sortedCategories.map(item => `
+                <div class="category-item">
+                    <div class="category-info">
+                        <div class="category-color" style="background: ${item.category?.color || '#6366f1'};"></div>
+                        <div style="flex: 1;">
+                            <div class="category-name">${item.category?.name || 'Unknown'}</div>
+                            <div class="category-time">${item.time}</div>
+                            ${item.limitInfo}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Change view
+        function changeView(view) {
+            currentView = view;
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            renderEverything();
+        }
+
+        // Filter activities
+        function filterActivities() {
+            renderEverything();
+        }
+
+        // Render everything
+        function renderEverything() {
+            renderActivities();
+            renderStats();
+            renderCategoryStats();
+            
+        }
+
+        // Export data
+        function exportData() {
+            const data = {
+                activities,
+                categories,
+                timeLimits,
+                exportDate: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `time-tracker-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showNotification('Data exported successfully! 📥', 'success');
+        }
+
+        // Import data
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (confirm('This will replace all current data. Continue?')) {
+                        activities = data.activities || [];
+                        categories = data.categories || getDefaultCategories();
+                        timeLimits = data.timeLimits || {};
+                        saveData();
+                        renderEverything();
+                        showNotification('Data imported successfully! 📤', 'success');
+                        closeSettingsModal();
+                    }
+                } catch (error) {
+                    showNotification('Invalid file format! ❌', 'error');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        // Clear all data
+        function clearAllData() {
+            if (confirm('⚠️ This will delete ALL your data permanently. Are you sure?')) {
+                if (confirm('Really sure? This cannot be undone!')) {
+                    localStorage.removeItem('timeTrackerData');
+                    activities = [];
+                    categories = getDefaultCategories();
+                    timeLimits = {};
+                    renderEverything();
+                    showNotification('All data cleared! 🗑️', 'success');
+                    closeSettingsModal();
+                }
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            
+            notificationText.textContent = message;
+            notification.className = `notification ${type} active`;
+            
+            setTimeout(() => {
+                notification.classList.remove('active');
+            }, 3000);
+        }
+
+        // Add event listeners for time limit checking
+        document.addEventListener('DOMContentLoaded', function() {
+            init();
+            
+            const hourInput = document.getElementById('activityHours');
+            const minuteInput = document.getElementById('activityMinutes');
+            const categorySelect = document.getElementById('activityCategory');
+            const dateInput = document.getElementById('activityDate');
+            
+            if (hourInput) hourInput.addEventListener('input', checkTimeLimit);
+            if (minuteInput) minuteInput.addEventListener('input', checkTimeLimit);
+            if (categorySelect) categorySelect.addEventListener('change', checkTimeLimit);
+            if (dateInput) dateInput.addEventListener('change', checkTimeLimit);
+        });
+
+        // Close modals on outside click
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>
