@@ -2,77 +2,27 @@
   "name": "YOUMELUX Executive Dashboard",
   "short_name": "YOUMELUX",
   "description": "Premium Executive Dashboard - Where Excellence Meets Luxury",
-  "start_url": "/",
+  "start_url": "/youmelux-app/",
+  "scope": "/youmelux-app/",
   "display": "standalone",
   "background_color": "#0a0e27",
   "theme_color": "#0a0e27",
   "orientation": "portrait-primary",
-  "scope": "/",
   "lang": "en-US",
   "dir": "ltr",
   "categories": ["business", "productivity", "finance"],
   "icons": [
     {
-      "src": "icon-72.png",
-      "sizes": "72x72",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icon-96.png",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icon-128.png",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icon-144.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icon-152.png",
-      "sizes": "152x152",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icon-384.png",
-      "sizes": "384x384",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icon-512.png",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%230a0e27'/%3E%3Cstop offset='100%25' style='stop-color:%231a1a3e'/%3E%3C/linearGradient%3E%3ClinearGradient id='txt' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23ffd700'/%3E%3Cstop offset='50%25' style='stop-color:%23ffffff'/%3E%3Cstop offset='100%25' style='stop-color:%2300bfff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' fill='url(%23bg)'/%3E%3Ccircle cx='256' cy='256' r='200' fill='rgba(138,43,226,0.3)'/%3E%3Ctext x='256' y='340' font-family='Arial Black' font-size='280' font-weight='bold' text-anchor='middle' fill='url(%23txt)'%3EY%3C/text%3E%3C/svg%3E",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "screenshot1.png",
-      "sizes": "540x720",
-      "type": "image/png",
-      "form_factor": "narrow"
     },
     {
-      "src": "screenshot2.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide"
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%230a0e27'/%3E%3Cstop offset='100%25' style='stop-color:%231a1a3e'/%3E%3C/linearGradient%3E%3ClinearGradient id='txt' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23ffd700'/%3E%3Cstop offset='50%25' style='stop-color:%23ffffff'/%3E%3Cstop offset='100%25' style='stop-color:%2300bfff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='192' height='192' fill='url(%23bg)'/%3E%3Ccircle cx='96' cy='96' r='75' fill='rgba(138,43,226,0.3)'/%3E%3Ctext x='96' y='130' font-family='Arial Black' font-size='105' font-weight='bold' text-anchor='middle' fill='url(%23txt)'%3EY%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
   ],
   "shortcuts": [
@@ -80,29 +30,25 @@
       "name": "Time Tracker",
       "short_name": "Time",
       "description": "Track work hours",
-      "url": "/time.html",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "url": "/youmelux-app/time.html"
     },
     {
       "name": "Labour Data",
       "short_name": "Labour",
       "description": "Manage labour records",
-      "url": "/newexpense.html",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "url": "/youmelux-app/newexpense.html"
     },
     {
       "name": "Expenses",
       "short_name": "Expenses",
       "description": "Track personal expenses",
-      "url": "/expenses.html",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "url": "/youmelux-app/expenses.html"
     },
     {
       "name": "Finance",
       "short_name": "Finance",
       "description": "Financial overview",
-      "url": "/finance.html",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "url": "/youmelux-app/finance.html"
     }
   ],
   "prefer_related_applications": false
